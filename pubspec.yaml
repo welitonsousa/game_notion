@@ -1,0 +1,119 @@
+name: game_notion
+description: "A new Flutter project."
+version: 1.0.5+8
+
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  firebase_core: ^3.15.2
+  firebase_auth: ^5.7.0
+  get: ^4.6.6
+  flutter_snake_navigationbar: ^0.6.1
+  cloud_firestore: ^5.6.12
+  dio: ^5.4.3+1
+  animate_do: ^3.3.4
+  flutter_typeahead: ^5.2.0
+  loading_animation_widget: ^1.2.1
+  flutter_svg: ^2.0.10+1
+  easy_image_viewer: ^1.5.0
+  fast_cached_network_image: ^1.2.9
+  fast_ui_kit: ^1.0.18
+  url_launcher: ^6.3.1
+  url_launcher_ios: ^6.3.2
+  get_storage: ^2.1.1
+  google_sign_in: ^6.2.1
+  google_sign_in_dartio: ^0.3.0
+  extension_google_sign_in_as_googleapis_auth: ^2.0.12
+  reorderables: ^0.6.0
+  search_select: ^1.0.11
+  material_symbols_icons: ^4.2815.0
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^4.0.0
+  msix: ^3.16.8
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - shorebird.yaml
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/inter/Inter-Black.ttf
+        - asset: assets/fonts/inter/Inter-Bold.ttf
+        - asset: assets/fonts/inter/Inter-ExtraBold.ttf
+        - asset: assets/fonts/inter/Inter-ExtraLight.ttf
+        - asset: assets/fonts/inter/Inter-Light.ttf
+        - asset: assets/fonts/inter/Inter-Medium.ttf
+        - asset: assets/fonts/inter/Inter-Regular.ttf
+        - asset: assets/fonts/inter/Inter-SemiBold.ttf
+        - asset: assets/fonts/inter/Inter-Thin.ttf
+    - family: Comfortaa
+      fonts:
+        - asset: assets/fonts/comfortaa/Comfortaa-Bold.ttf
+        - asset: assets/fonts/comfortaa/Comfortaa-Light.ttf
+        - asset: assets/fonts/comfortaa/Comfortaa-Medium.ttf
+        - asset: assets/fonts/comfortaa/Comfortaa-Regular.ttf
+        - asset: assets/fonts/comfortaa/Comfortaa-SemiBold.ttf
+    - family: Lato
+      fonts:
+        - asset: assets/fonts/lato/Lato-Black.ttf
+        - asset: assets/fonts/lato/Lato-BlackItalic.ttf
+        - asset: assets/fonts/lato/Lato-Bold.ttf
+        - asset: assets/fonts/lato/Lato-BoldItalic.ttf
+        - asset: assets/fonts/lato/Lato-Italic.ttf
+        - asset: assets/fonts/lato/Lato-Light.ttf
+        - asset: assets/fonts/lato/Lato-LightItalic.ttf
+        - asset: assets/fonts/lato/Lato-Regular.ttf
+        - asset: assets/fonts/lato/Lato-Thin.ttf
+        - asset: assets/fonts/lato/Lato-ThinItalic.ttf
+
+    - family: Oswald
+      fonts:
+        - asset: assets/fonts/oswald/Oswald-Bold.ttf
+        - asset: assets/fonts/oswald/Oswald-ExtraLight.ttf
+        - asset: assets/fonts/oswald/Oswald-Light.ttf
+        - asset: assets/fonts/oswald/Oswald-Medium.ttf
+        - asset: assets/fonts/oswald/Oswald-Regular.ttf
+        - asset: assets/fonts/oswald/Oswald-SemiBold.ttf
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/roboto/Roboto-Black.ttf
+        - asset: assets/fonts/roboto/Roboto-BlackItalic.ttf
+        - asset: assets/fonts/roboto/Roboto-Bold.ttf
+        - asset: assets/fonts/roboto/Roboto-BoldItalic.ttf
+        - asset: assets/fonts/roboto/Roboto-Italic.ttf
+        - asset: assets/fonts/roboto/Roboto-Light.ttf
+        - asset: assets/fonts/roboto/Roboto-LightItalic.ttf
+        - asset: assets/fonts/roboto/Roboto-Medium.ttf
+        - asset: assets/fonts/roboto/Roboto-MediumItalic.ttf
+        - asset: assets/fonts/roboto/Roboto-Regular.ttf
+        - asset: assets/fonts/roboto/Roboto-Thin.ttf
+        - asset: assets/fonts/roboto/Roboto-ThinItalic.ttf
+    - family: Ubuntu
+      fonts:
+        - asset: assets/fonts/ubuntu/UbuntuSans-Bold.ttf
+        - asset: assets/fonts/ubuntu/UbuntuSans-BoldItalic.ttf
+        - asset: assets/fonts/ubuntu/UbuntuSans-Italic.ttf
+        - asset: assets/fonts/ubuntu/UbuntuSans-Light.ttf
+        - asset: assets/fonts/ubuntu/UbuntuSans-LightItalic.ttf
+        - asset: assets/fonts/ubuntu/UbuntuSans-Medium.ttf
+        - asset: assets/fonts/ubuntu/UbuntuSans-MediumItalic.ttf
+        - asset: assets/fonts/ubuntu/UbuntuSans-SemiBold.ttf
+        - asset: assets/fonts/ubuntu/UbuntuSans-SemiBoldItalic.ttf
+        - asset: assets/fonts/ubuntu/UbuntuSans-Regular.ttf
+        - asset: assets/fonts/ubuntu/UbuntuSans-Thin.ttf
+        - asset: assets/fonts/ubuntu/UbuntuSans-ThinItalic.ttf
+  #
+msix_config:
+  display_name: Game Notion
+  publisher_display_name: Game Notion
+  identity_name: GameNotion
+  msix_version: 1.0.0.0
+  logo_path: assets\images\logo.png

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "682329935211",
+    "project_id": "game-notion",
+    "storage_bucket": "game-notion.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:682329935211:android:ae2a99770b0233bf3f102e",
+        "android_client_info": {
+          "package_name": "com.gamenotion.br.game_notion"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBv6rnnAr5VYe1kaQ_T0-3WSnHKM-nNJLg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
