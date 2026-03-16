@@ -16,7 +16,6 @@ Future<void> main() async {
 
   runApp(SplashMain(theme: theme));
   await AppInitialize.initialize();
-  await UserSettingsController.initialize();
 
   runApp(const MyApp());
 }
@@ -33,9 +32,10 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    FirebaseAuth.instance.userChanges().listen((user) {
+    FirebaseAuth.instance.userChanges().listen((user) async {
       if (user != null) {
         if (Get.currentRoute == AppPages.signIn) {
+          await UserSettingsController.initialize();
           Get.offAllNamed(AppPages.home);
         }
       } else {
@@ -61,9 +61,7 @@ class _MyAppState extends State<MyApp> {
             theme: theme.light,
             themeMode: settings.settings.themeMode,
             debugShowCheckedModeBanner: false,
-            initialRoute: FirebaseAuth.instance.currentUser != null
-                ? AppPages.home
-                : AppPages.signIn,
+            initialRoute: AppPages.signIn,
             getPages: AppPages.pages,
           );
         });

@@ -2,14 +2,12 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:game_notion/core/settings/env.dart';
 import 'package:game_notion/core/ui/app_message.dart';
 import 'package:game_notion/firebase_options.dart';
 import 'package:game_notion/remote/services/auth/auth_service.dart';
 import 'package:game_notion/routers/pages.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:google_sign_in_dartio/google_sign_in_dartio.dart';
 
 class SignInController extends GetxController {
   final AuthService authService;
@@ -38,29 +36,29 @@ class SignInController extends GetxController {
   }
 
   Future<void> signInWithGoogle() async {
-    late GoogleSignIn google;
+    // late GoogleSignIn google;
     final clientID = DefaultFirebaseOptions.currentPlatform.iosClientId;
     // print('client id $clientID');
-    const appID = Env.OAUTH_CLIENT_ID;
+    // const appID = Env.OAUTH_CLIENT_ID;
 
     if (Platform.isWindows) {
-      await GoogleSignInDart.register(clientId: appID);
-      google = GoogleSignIn();
+      // await GoogleSignInDart.register(clientId: appID);
+      GoogleSignIn.instance;
     } else if (Platform.isAndroid) {
-      google = GoogleSignIn();
+      GoogleSignIn.instance;
     } else if (Platform.isIOS) {
-      google = GoogleSignIn(clientId: clientID);
+      await GoogleSignIn.instance.initialize(clientId: clientID);
     }
     await Future.wait([
-      google.signOut(),
+      GoogleSignIn.instance.signOut(),
       FirebaseAuth.instance.signOut(),
     ]);
 
-    final res = await google.signIn();
-    final googleAuth = await res?.authentication;
+    final res = await GoogleSignIn.instance.authenticate();
+    final googleAuth = await res.authentication;
     final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
+      // accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
     );
 
     await FirebaseAuth.instance.signInWithCredential(credential);

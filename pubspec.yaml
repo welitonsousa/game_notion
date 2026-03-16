@@ -1,6 +1,6 @@
 name: game_notion
 description: "A new Flutter project."
-version: 1.0.5+8
+version: 1.0.6+9
 
 environment:
   sdk: '>=3.2.0 <4.0.0'
@@ -24,9 +24,9 @@ dependencies:
   url_launcher: ^6.3.1
   url_launcher_ios: ^6.3.2
   get_storage: ^2.1.1
-  google_sign_in: ^6.2.1
-  google_sign_in_dartio: ^0.3.0
-  extension_google_sign_in_as_googleapis_auth: ^2.0.12
+  google_sign_in: ^7.2.0
+  # google_sign_in_dartio: ^0.3.0
+  # extension_google_sign_in_as_googleapis_auth: ^2.0.12
   reorderables: ^0.6.0
   search_select: ^1.0.11
   material_symbols_icons: ^4.2815.0
@@ -41,7 +41,6 @@ flutter:
 
   assets:
     - assets/images/
-    - shorebird.yaml
   fonts:
     - family: Inter
       fonts:
