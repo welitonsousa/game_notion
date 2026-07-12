@@ -14,7 +14,7 @@ import 'splash_main.dart';
 Future<void> main() async {
   HttpOverrides.global = MyHttpOverrides();
 
-  runApp(SplashMain());
+  runApp(const SplashMain());
   await AppInitialize.initialize();
 
   runApp(const MyApp());
@@ -70,17 +70,12 @@ class _MyAppState extends State<MyApp> {
                     fontFamily: settings.settings.fontName,
                   ),
             );
-             final light = ThemeData.light(useMaterial3: true).copyWith(
-              primaryColor: settings.settings.themeColor,
-              textTheme: ThemeData.light(useMaterial3: true).textTheme.apply(
-                    fontFamily: settings.settings.fontName,
-                  ),
-            );
+        
           return GetMaterialApp(
             title: 'Game Notion',
             darkTheme: dark,
-            theme: light,
-            themeMode: settings.settings.themeMode,
+            theme: dark,
+            themeMode: ThemeMode.dark,
             debugShowCheckedModeBanner: false,
             initialRoute: TwitchCredentialsStore.hasSavedCredentials()
                 ? AppPages.signIn
