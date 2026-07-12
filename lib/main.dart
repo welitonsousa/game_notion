@@ -10,7 +10,7 @@ import 'package:game_notion/routers/pages.dart';
 import 'package:get/get.dart';
 
 import 'splash_main.dart';
-
+ 
 Future<void> main() async {
   HttpOverrides.global = MyHttpOverrides();
 
