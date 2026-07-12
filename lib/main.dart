@@ -1,9 +1,10 @@
+import 'dart:async';
 import 'dart:io';
 
-import 'package:fast_ui_kit/ui/theme/fast_theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:game_notion/core/settings/app_initialize.dart';
+import 'package:game_notion/core/settings/twitch_credentials_store.dart';
 import 'package:game_notion/core/settings/user_settings_controller.dart';
 import 'package:game_notion/routers/pages.dart';
 import 'package:get/get.dart';
@@ -11,10 +12,9 @@ import 'package:get/get.dart';
 import 'splash_main.dart';
 
 Future<void> main() async {
-  var theme = FastTheme(seed: Colors.deepPurpleAccent);
   HttpOverrides.global = MyHttpOverrides();
 
-  runApp(SplashMain(theme: theme));
+  runApp(SplashMain());
   await AppInitialize.initialize();
 
   runApp(const MyApp());
@@ -29,21 +29,34 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final settings = UserSettingsController.instance;
+  StreamSubscription<User?>? _authSubscription;
 
   @override
   void initState() {
-    FirebaseAuth.instance.userChanges().listen((user) async {
+    super.initState();
+
+    _authSubscription = FirebaseAuth.instance.userChanges().listen((user) async {
       if (user != null) {
-        if (Get.currentRoute == AppPages.signIn) {
+        if (Get.currentRoute != AppPages.home) {
           await UserSettingsController.initialize();
           Get.offAllNamed(AppPages.home);
         }
       } else {
-        Get.offAllNamed(AppPages.signIn);
+        final nextRoute = TwitchCredentialsStore.hasSavedCredentials()
+            ? AppPages.signIn
+            : AppPages.twitchSetup;
+
+        if (Get.currentRoute != nextRoute) {
+          Get.offAllNamed(nextRoute);
+        }
       }
     });
+  }
 
-    super.initState();
+  @override
+  void dispose() {
+    _authSubscription?.cancel();
+    super.dispose();
   }
 
   @override
@@ -51,17 +64,27 @@ class _MyAppState extends State<MyApp> {
     return AnimatedBuilder(
         animation: UserSettingsController.instance,
         builder: (context, child) {
-          final theme = FastTheme(
-            seed: settings.settings.themeColor,
-            font: settings.settings.fontName,
-          );
+            final dark = ThemeData.dark(useMaterial3: true).copyWith(
+              primaryColor: settings.settings.themeColor,
+              textTheme: ThemeData.dark(useMaterial3: true).textTheme.apply(
+                    fontFamily: settings.settings.fontName,
+                  ),
+            );
+             final light = ThemeData.light(useMaterial3: true).copyWith(
+              primaryColor: settings.settings.themeColor,
+              textTheme: ThemeData.light(useMaterial3: true).textTheme.apply(
+                    fontFamily: settings.settings.fontName,
+                  ),
+            );
           return GetMaterialApp(
             title: 'Game Notion',
-            darkTheme: theme.dark,
-            theme: theme.light,
+            darkTheme: dark,
+            theme: light,
             themeMode: settings.settings.themeMode,
             debugShowCheckedModeBanner: false,
-            initialRoute: AppPages.signIn,
+            initialRoute: TwitchCredentialsStore.hasSavedCredentials()
+                ? AppPages.signIn
+                : AppPages.twitchSetup,
             getPages: AppPages.pages,
           );
         });

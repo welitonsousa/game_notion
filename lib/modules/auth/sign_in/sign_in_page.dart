@@ -1,9 +1,10 @@
-import 'package:fast_ui_kit/ui/widgets/animate.dart';
-import 'package:fast_ui_kit/ui/widgets/button.dart';
-import 'package:fast_ui_kit/ui/widgets/form_field.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:game_notion/core/ui/dialogs/reset_password_dialog.dart';
+import 'package:game_notion/core/ui/widgets/app_animate.dart';
+import 'package:game_notion/core/ui/widgets/app_button.dart';
+import 'package:game_notion/core/ui/widgets/app_form_field.dart';
 import 'package:game_notion/routers/pages.dart';
 import 'package:get/get.dart';
 
@@ -37,8 +38,8 @@ class _SignInPageState extends State<SignInPage> {
       body: ListView(
         children: [
           const SizedBox(height: 20),
-          FastAnimate(
-            type: FastAnimateType.jelloIn,
+          AppAnimate(
+            type: AppAnimateType.jelloIn,
             delay: const Duration(milliseconds: 500),
             duration: const Duration(milliseconds: 2000),
             child: Hero(
@@ -58,7 +59,7 @@ class _SignInPageState extends State<SignInPage> {
                     key: form,
                     child: Column(
                       children: [
-                        FastFormField(
+                        AppFormField(
                           label: 'E-mail',
                           validator: Zod().email().build,
                           textInputAction: TextInputAction.next,
@@ -66,7 +67,7 @@ class _SignInPageState extends State<SignInPage> {
                           textInputType: TextInputType.emailAddress,
                         ),
                         const SizedBox(height: 10),
-                        FastFormField(
+                        AppFormField(
                           label: 'Senha',
                           validator: Zod().min(6).build,
                           controller: passwordController,
@@ -84,7 +85,7 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                         const SizedBox(height: 10),
                         Obx(() {
-                          return FastButton(
+                          return AppButton(
                             label: 'Entrar',
                             loading: controller.loading.value,
                             onPressed: () {
@@ -99,7 +100,7 @@ class _SignInPageState extends State<SignInPage> {
                           );
                         }),
                         const SizedBox(height: 10),
-                        FastButton(
+                        AppButton(
                           label: 'Entrar com Google',
                           background: Colors.red,
                           loading: controller.loading.value,

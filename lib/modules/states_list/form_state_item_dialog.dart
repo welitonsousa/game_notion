@@ -1,8 +1,9 @@
-import 'package:fast_ui_kit/ui/widgets/button.dart';
-import 'package:fast_ui_kit/ui/widgets/form_field.dart';
+
 import 'package:flutter/material.dart';
 import 'package:game_notion/core/constants/icon_list.dart';
 import 'package:game_notion/core/settings/user_settings_controller.dart';
+import 'package:game_notion/core/ui/widgets/app_button.dart';
+import 'package:game_notion/core/ui/widgets/app_form_field.dart';
 import 'package:game_notion/models/game_item_list_model.dart';
 import 'package:game_notion/modules/states_list/states_list_controller.dart';
 import 'package:get/get.dart';
@@ -86,14 +87,14 @@ class _FormStateItemDialogState extends State<FormStateItemDialog> {
                 else
                   const SizedBox(height: 50),
                 const SizedBox(height: 10),
-                FastFormField(
+                AppFormField(
                   label: 'Nome',
                   radius: 6,
                   validator: Zod().required().max(20).build,
                   controller: controllerName,
                 ),
                 const SizedBox(height: 10),
-                FastFormField(
+                AppFormField(
                   label: 'ID',
                   radius: 6,
                   validator: Zod()
@@ -115,7 +116,7 @@ class _FormStateItemDialogState extends State<FormStateItemDialog> {
                   controller: controllerId,
                 ),
                 const SizedBox(height: 10),
-                FastFormField(
+                AppFormField(
                   label: 'Pesquisar icone',
                   radius: 6,
                   validator: Zod().custom((e) {
@@ -169,7 +170,7 @@ class _FormStateItemDialogState extends State<FormStateItemDialog> {
                 Row(
                   children: [
                     Expanded(
-                      child: FastButton(
+                      child: AppButton(
                         label: 'Cancelar',
                         background: Colors.red,
                         onPressed: Get.back,
@@ -177,7 +178,7 @@ class _FormStateItemDialogState extends State<FormStateItemDialog> {
                     ),
                     const SizedBox(width: 10),
                     Expanded(
-                      child: FastButton(
+                      child: AppButton(
                           label: 'Salvar',
                           onPressed: () {
                             if (form.currentState?.validate() ?? false) {

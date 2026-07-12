@@ -1,4 +1,3 @@
-import 'package:fast_ui_kit/icons/icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -61,7 +60,7 @@ class _AppDrawerState extends State<AppDrawer> {
             ),
             ExpansionTile(
               title: const Text('Tema'),
-              leading: Icon(FastIcons.awesome.pencil_square),
+              leading: const Icon(Icons.edit_outlined),
               children: List.generate(
                 ThemeMode.values.length,
                 (index) {
@@ -128,7 +127,7 @@ class _AppDrawerState extends State<AppDrawer> {
                 ]),
             ExpansionTile(
               title: const Text('Fonte'),
-              leading: Icon(FastIcons.awesome.font),
+                  leading: const Icon(Icons.font_download_outlined),
               children: List.generate(
                 SettingsModel.fonts.length,
                 (index) {
@@ -147,7 +146,7 @@ class _AppDrawerState extends State<AppDrawer> {
               ),
             ),
             ListTile(
-              leading: Icon(FastIcons.awesome.gamepad),
+              leading: const Icon(Icons.sports_esports_outlined),
               title: const Text('Listas de games'),
               onTap: () async {
                 Get.back();
@@ -155,7 +154,7 @@ class _AppDrawerState extends State<AppDrawer> {
               },
             ),
             ListTile(
-              leading: Icon(FastIcons.awesome.user),
+              leading: const Icon(Icons.person_outline),
               title: const Text('Sobre'),
               onTap: () async {
                 Get.back();
@@ -166,7 +165,7 @@ class _AppDrawerState extends State<AppDrawer> {
               },
             ),
             ListTile(
-              leading: Icon(FastIcons.awesome.window_close),
+              leading: const Icon(Icons.close),
               title: const Text('Sair'),
               onTap: () async {
                 Get.back();

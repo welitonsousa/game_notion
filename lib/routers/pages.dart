@@ -1,5 +1,6 @@
 import 'package:game_notion/modules/auth/sign_in/sign_in_bindings.dart';
 import 'package:game_notion/modules/auth/sign_in/sign_in_page.dart';
+import 'package:game_notion/modules/auth/twitch_credentials/twitch_credentials_page.dart';
 import 'package:game_notion/modules/auth/sign_up/sign_up_bindings.dart';
 import 'package:game_notion/modules/auth/sign_up/sign_up_page.dart';
 import 'package:game_notion/modules/game_detail/game_detail_bindings.dart';
@@ -12,6 +13,7 @@ import 'package:get/get.dart';
 
 class AppPages {
   static const String home = '/';
+  static const String twitchSetup = '/twitch-credentials';
   static const String signIn = '/sign-in';
   static const String signUp = '/sign-up';
   static const String gameDetail = '/game-detail';
@@ -38,6 +40,10 @@ class AppPages {
       name: signIn,
       page: () => const SignInPage(),
       binding: SignInBindings(),
+    ),
+    GetPage(
+      name: twitchSetup,
+      page: () => const TwitchCredentialsPage(),
     ),
     GetPage(
       name: signUp,

@@ -1,6 +1,5 @@
-import 'package:fast_ui_kit/icons/icons.dart';
-import 'package:fast_ui_kit/ui/widgets/animate.dart';
 import 'package:flutter/material.dart';
+import 'package:game_notion/core/ui/widgets/app_animate.dart';
 import 'package:game_notion/models/game_item_list_model.dart';
 import 'package:get/get.dart';
 
@@ -18,11 +17,11 @@ class FavoriteButtonWidget extends StatelessWidget {
     if (state != null) {
       return IconButton(
         onPressed: toggleFavorite,
-        icon: FastAnimate(
+        icon: AppAnimate(
           duration: const Duration(milliseconds: 500),
-          type: FastAnimateType.pulse,
+          type: AppAnimateType.pulse,
           child: Icon(
-            FastIcons.awesome.heart,
+            Icons.favorite,
             color: context.theme.buttonTheme.colorScheme?.primary,
           ),
         ),
@@ -30,7 +29,7 @@ class FavoriteButtonWidget extends StatelessWidget {
     } else {
       return IconButton(
         onPressed: toggleFavorite,
-        icon: Icon(FastIcons.awesome.heart),
+        icon: const Icon(Icons.favorite),
       );
     }
   }

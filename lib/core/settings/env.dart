@@ -1,12 +1,25 @@
+import 'package:game_notion/core/settings/twitch_credentials_store.dart';
+
 class Env {
-  static const TWITCH_CLIENT_ID = String.fromEnvironment(
-    'TWITCH_CLIENT_ID',
-  );
-  static const TWITCH_CLIENT_SECRET = String.fromEnvironment(
-    'TWITCH_CLIENT_SECRET',
-  );
+
   static String token = '';
   static const OAUTH_CLIENT_ID = String.fromEnvironment(
     'OAUTH_CLIENT_ID',
   );
+
+  static String get TWITCH_CLIENT_ID {
+    final clientId = TwitchCredentialsStore.clientId()?.trim();
+    if (clientId != null && clientId.isNotEmpty) {
+      return clientId;
+    }
+    throw StateError('TWITCH_CLIENT_ID is not set');
+  }
+
+  static String get TWITCH_CLIENT_SECRET {
+    final clientSecret = TwitchCredentialsStore.clientSecret()?.trim();
+    if (clientSecret != null && clientSecret.isNotEmpty) {
+      return clientSecret;
+    }
+    throw StateError('TWITCH_CLIENT_SECRET is not set');
+  }
 }

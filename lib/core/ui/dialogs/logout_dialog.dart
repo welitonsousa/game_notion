@@ -1,8 +1,7 @@
-import 'package:fast_ui_kit/extension/text.dart';
-import 'package:fast_ui_kit/ui/widgets/button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:game_notion/core/ui/widgets/app_button.dart';
 import 'package:get/get.dart';
 
 class LogoutDialog extends StatelessWidget {
@@ -18,7 +17,7 @@ class LogoutDialog extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Logout', style: context.H2),
+              Text('Logout', style: context.theme.textTheme.headlineSmall),
               const SizedBox(height: 10),
               SvgPicture.asset(
                 'assets/images/ps4-control.svg',
@@ -31,7 +30,7 @@ class LogoutDialog extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Expanded(
-                    child: FastButton(
+                    child: AppButton(
                       label: 'Cancelar',
                       background: context.theme.colorScheme.error,
                       onPressed: Get.back,
@@ -39,7 +38,7 @@ class LogoutDialog extends StatelessWidget {
                   ),
                   const SizedBox(width: 10),
                   Expanded(
-                    child: FastButton(
+                    child: AppButton(
                       label: 'Logout',
                       onPressed: () async {
                         Get.back();

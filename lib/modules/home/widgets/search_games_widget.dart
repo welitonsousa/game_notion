@@ -1,8 +1,7 @@
-import 'package:fast_ui_kit/icons/icons.dart';
-import 'package:fast_ui_kit/ui/widgets/animate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:game_notion/core/extensions/string_ext.dart';
+import 'package:game_notion/core/ui/widgets/app_animate.dart';
 import 'package:game_notion/models/game_small_model.dart';
 import 'package:game_notion/modules/home/home_controller.dart';
 import 'package:game_notion/routers/pages.dart';
@@ -36,8 +35,8 @@ final focus = FocusNode();
         mainAxisSize: MainAxisSize.min,
         children: [
           if (isSearch.value)
-            FastAnimate(
-              type: FastAnimateType.elasticInRight,
+            AppAnimate(
+              type: AppAnimateType.elasticInRight,
               duration: const Duration(milliseconds: 1000),
               child: Padding(
                 padding: const EdgeInsets.only(left: 30),
@@ -72,7 +71,7 @@ final focus = FocusNode();
                               isSearch.value = false;
                               searController.clear();
                             },
-                            child: Icon(FastIcons.awesome.close)),
+                            child: Icon(Icons.close)),
                         hintText: 'Pesquisar',
                         filled: true,
                         border: OutlineInputBorder(
@@ -127,7 +126,7 @@ final focus = FocusNode();
                                   width: 50,
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
-                                    child: Icon(FastIcons.awesome.gamepad),
+                                    child: Icon(Icons.gamepad),
                                   ),
                                 )
                             ],
@@ -151,7 +150,7 @@ final focus = FocusNode();
                 padding: EdgeInsets.symmetric(vertical: 15),
                 child: Text(' Game'),
               ),
-              icon: Icon(FastIcons.awesome.gamepad),
+              icon: Icon(Icons.gamepad),
             )
         ],
       ),

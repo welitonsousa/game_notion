@@ -1,9 +1,9 @@
 import 'package:easy_image_viewer/easy_image_viewer.dart';
-import 'package:fast_ui_kit/fast_ui_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:game_notion/core/ui/app_message.dart';
 import 'package:game_notion/core/ui/widgets/app_image.dart';
+import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class AppAboutDialog extends StatelessWidget {

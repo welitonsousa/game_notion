@@ -1,10 +1,9 @@
-import 'package:fast_ui_kit/extension/text.dart';
-import 'package:fast_ui_kit/ui/widgets/button.dart';
-import 'package:fast_ui_kit/ui/widgets/form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:game_notion/core/ui/app_message.dart';
+import 'package:game_notion/core/ui/widgets/app_button.dart';
+import 'package:game_notion/core/ui/widgets/app_form_field.dart';
 import 'package:get/get.dart';
 
 class ResetPasswordDialog extends StatefulWidget {
@@ -34,7 +33,7 @@ class _ResetPasswordDialogState extends State<ResetPasswordDialog> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Esqueceu a senha?', style: context.H2),
+              Text('Esqueceu a senha?', style: context.theme.textTheme.headlineSmall),
               const SizedBox(height: 10),
               SvgPicture.asset(
                 'assets/images/email.svg',
@@ -48,7 +47,7 @@ class _ResetPasswordDialogState extends State<ResetPasswordDialog> {
               const SizedBox(height: 16),
               Form(
                 key: _formKey,
-                child: FastFormField(
+                child: AppFormField(
                   label: 'Email',
                   controller: emailController,
                   validator: Zod().email().build,
@@ -60,7 +59,7 @@ class _ResetPasswordDialogState extends State<ResetPasswordDialog> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Expanded(
-                    child: FastButton(
+                    child: AppButton(
                       label: 'Cancelar',
                       background: context.theme.colorScheme.error,
                       onPressed: Get.back,
@@ -68,7 +67,7 @@ class _ResetPasswordDialogState extends State<ResetPasswordDialog> {
                   ),
                   const SizedBox(width: 10),
                   Expanded(
-                    child: FastButton(
+                    child: AppButton(
                       label: 'Enviar',
                       onPressed: () async {
                         if (_formKey.currentState?.validate() ?? false) {

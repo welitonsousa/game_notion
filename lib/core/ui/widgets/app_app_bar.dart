@@ -1,5 +1,6 @@
-import 'package:fast_ui_kit/fast_ui_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:game_notion/core/ui/widgets/app_animate.dart';
+import 'package:game_notion/core/utils/debounce.dart';
 
 class AppAppBar extends PreferredSize {
   final void Function(String)? onSearch;
@@ -81,11 +82,11 @@ class __SearchAppBarState extends State<_SearchAppBar> {
               Expanded(
                 child: Container(
                   margin: const EdgeInsets.only(top: 15, left: 10, right: 10),
-                  child: FastAnimate(
+                  child: AppAnimate(
                     duration: const Duration(milliseconds: 1000),
                     type: widget.animated
-                        ? FastAnimateType.elasticInRight
-                        : FastAnimateType.none,
+                        ? AppAnimateType.elasticInRight
+                        : AppAnimateType.none,
                     child: TextFormField(
                       autofocus: true,
                       decoration: InputDecoration(
@@ -96,7 +97,7 @@ class __SearchAppBarState extends State<_SearchAppBar> {
                         hintText: widget.hint,
                         contentPadding: const EdgeInsets.all(10),
                         suffix: IconButton(
-                          icon: Icon(FastIcons.awesome.close),
+                          icon: Icon(Icons.close),
                           onPressed: () {
                             widget.onSearch?.call('');
                             setState(() => searching = false);
@@ -104,7 +105,7 @@ class __SearchAppBarState extends State<_SearchAppBar> {
                         ),
                       ),
                       textInputAction: TextInputAction.search,
-                      onChanged: (v) => FastDebounce.call(
+                      onChanged: (v) => AppDebounce.call(
                         action: () => widget.onSearch?.call(v),
                         milliseconds: widget.debounceTime,
                       ),

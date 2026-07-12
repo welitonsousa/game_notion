@@ -10,8 +10,8 @@ class AppInitialize {
 
     await Future.wait([
       Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
-      FastCachedImageConfig.init(),
-      GetStorage.init(),
+      FastCachedImageConfig.init(subDir: 'game_notion'),
+      GetStorage.init('game_notion'),
     ]);
   }
 }

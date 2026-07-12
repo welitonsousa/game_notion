@@ -1,7 +1,7 @@
-import 'package:fast_ui_kit/ui/widgets/button.dart';
-import 'package:fast_ui_kit/ui/widgets/form_field.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:game_notion/core/ui/app_state.dart';
+import 'package:game_notion/core/ui/widgets/app_button.dart';
+import 'package:game_notion/core/ui/widgets/app_form_field.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import './sign_up_controller.dart';
@@ -50,7 +50,7 @@ class _SignUpPageState extends AppState<SignUpPage, SignUpController> {
                     key: form,
                     child: Column(
                       children: [
-                        FastFormField(
+                        AppFormField(
                           label: 'E-mail',
                           textInputAction: TextInputAction.next,
                           validator: Zod().email().build,
@@ -58,7 +58,7 @@ class _SignUpPageState extends AppState<SignUpPage, SignUpController> {
                           textInputType: TextInputType.emailAddress,
                         ),
                         const SizedBox(height: 10),
-                        FastFormField(
+                        AppFormField(
                           label: 'Senha',
                           textInputAction: TextInputAction.next,
                           validator: Zod().min(6).build,
@@ -67,7 +67,7 @@ class _SignUpPageState extends AppState<SignUpPage, SignUpController> {
                           textInputType: TextInputType.emailAddress,
                         ),
                         const SizedBox(height: 10),
-                        FastFormField(
+                        AppFormField(
                           label: 'Confirme a senha',
                           validator: Zod()
                               .min(6)
@@ -92,7 +92,7 @@ class _SignUpPageState extends AppState<SignUpPage, SignUpController> {
                         ),
                         const SizedBox(height: 10),
                         Obx(() {
-                          return FastButton(
+                          return AppButton(
                             label: 'Cadastrar',
                             loading: controller.loading.value,
                             onPressed: () {
