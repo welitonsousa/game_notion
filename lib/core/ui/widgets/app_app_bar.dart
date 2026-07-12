@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:game_notion/core/ui/widgets/app_animate.dart';
 import 'package:game_notion/core/utils/debounce.dart';
@@ -65,63 +66,79 @@ class __SearchAppBarState extends State<_SearchAppBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        AppBar(
-          title: Text(widget.title),
-          leading: searching ? const SizedBox() : widget.leading,
-          leadingWidth: searching ? 0 : null,
-          actions: [
-            if (!searching && widget.onSearch != null) ...?widget.actions,
-            if (!searching && widget.onSearch != null)
-              IconButton(
-                icon: const Icon(Icons.search),
-                onPressed: () => setState(() => searching = true),
-              ),
-            if (searching)
-              Expanded(
-                child: Container(
-                  margin: const EdgeInsets.only(top: 15, left: 10, right: 10),
-                  child: AppAnimate(
-                    duration: const Duration(milliseconds: 1000),
-                    type: widget.animated
-                        ? AppAnimateType.elasticInRight
-                        : AppAnimateType.none,
-                    child: TextFormField(
-                      autofocus: true,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        filled: true,
-                        hintText: widget.hint,
-                        contentPadding: const EdgeInsets.all(10),
-                        suffix: IconButton(
-                          icon: Icon(Icons.close),
-                          onPressed: () {
-                            widget.onSearch?.call('');
-                            setState(() => searching = false);
-                          },
-                        ),
-                      ),
-                      textInputAction: TextInputAction.search,
-                      onChanged: (v) => AppDebounce.call(
-                        action: () => widget.onSearch?.call(v),
-                        milliseconds: widget.debounceTime,
-                      ),
-                    ),
-                  ),
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      centerTitle: true,
+      flexibleSpace: ClipRRect(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardColor.withValues(alpha: 0.65),
+              border: Border(
+                bottom: BorderSide(
+                  color: Colors.white.withValues(alpha: 0.1),
+                  width: 1,
                 ),
               ),
-          ],
+            ),
+          ),
         ),
-        if (widget.loading ?? false)
-          const Expanded(
-              child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            child: LinearProgressIndicator(),
-          )),
+      ),
+      title: searching
+          ? AppAnimate(
+              duration: const Duration(milliseconds: 1000),
+              type: widget.animated
+                  ? AppAnimateType.elasticInRight
+                  : AppAnimateType.none,
+              child: TextFormField(
+                autofocus: true,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  filled: true,
+                  hintText: widget.hint,
+                  contentPadding: const EdgeInsets.all(10),
+                  suffix: IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () {
+                      widget.onSearch?.call('');
+                      setState(() => searching = false);
+                    },
+                  ),
+                ),
+                textInputAction: TextInputAction.search,
+                onChanged: (v) => AppDebounce.call(
+                  action: () => widget.onSearch?.call(v),
+                  milliseconds: widget.debounceTime,
+                ),
+              ),
+            )
+          : Text(
+              widget.title,
+              style: const TextStyle(
+                fontWeight: FontWeight.w800,
+                letterSpacing: 0.5,
+              ),
+            ),
+      leading: searching ? const SizedBox() : widget.leading,
+      leadingWidth: searching ? 0 : null,
+      actions: [
+        if (!searching && widget.onSearch != null) ...?widget.actions,
+        if (!searching && widget.onSearch != null)
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () => setState(() => searching = true),
+          ),
       ],
+      bottom: (widget.loading ?? false)
+          ? const PreferredSize(
+              preferredSize: Size.fromHeight(5),
+              child: LinearProgressIndicator(),
+            )
+          : null,
     );
   }
 }

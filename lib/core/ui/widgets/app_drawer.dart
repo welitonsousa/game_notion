@@ -58,28 +58,7 @@ class _AppDrawerState extends State<AppDrawer> {
                     : null,
               ),
             ),
-            ExpansionTile(
-              title: const Text('Tema'),
-              leading: const Icon(Icons.edit_outlined),
-              children: List.generate(
-                ThemeMode.values.length,
-                (index) {
-                  final theme = ThemeMode.values[index];
-                  return ListTile(
-                    selected: index == userSettings.settings.themeMode.index,
-                    title: Text(switch (theme) {
-                      ThemeMode.system => 'Sistema',
-                      ThemeMode.light => 'Claro',
-                      ThemeMode.dark => 'Escuro',
-                    }),
-                    onTap: () {
-                      userSettings.changeThemeMode(theme);
-                      setState(() {});
-                    },
-                  );
-                },
-              ),
-            ),
+          
             ExpansionTile(
                 title: const Text('Cor do app'),
                 leading: const Icon(Icons.palette),
