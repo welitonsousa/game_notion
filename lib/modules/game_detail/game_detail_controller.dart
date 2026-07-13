@@ -1,5 +1,6 @@
 import 'package:game_notion/models/game_item_list_model.dart';
 import 'package:game_notion/models/game_model.dart';
+import 'package:game_notion/models/game_small_model.dart';
 import 'package:game_notion/modules/home/home_controller.dart';
 import 'package:game_notion/remote/services/games/games_sevice.dart';
 import 'package:get/get.dart';
@@ -20,6 +21,12 @@ class GameDetailController extends GetxController {
         homeController.allGames.indexWhere((e) => e.id == game.value?.id);
     if (index == -1) return null;
     return homeController.allGames[index].itemsList;
+  }
+
+  GameSmallModel getSavedModel() {
+    final index = homeController.allGames.indexWhere((e) => e.id == gameId);
+    if (index != -1) return homeController.allGames[index];
+    return game.value!.toSmallModel();
   }
 
   final loading = true.obs;
@@ -47,7 +54,44 @@ class GameDetailController extends GetxController {
   Future<void> changeGameState(List<GameItemListModel> states) async {
     if (game.value == null) return;
 
-    game.value!.state = states.map((e) => e.id).toList();
-    await gameService.saveGame(game: game.value!.toSmallModel());
+    final existing = getSavedModel();
+    existing.state = states.map((e) => e.id).toList();
+    game.value!.state = existing.state;
+    await gameService.saveGame(game: existing);
+  }
+
+  Future<void> saveUserRating(double rating) async {
+    if (game.value == null) return;
+    final existing = getSavedModel();
+    existing.userRating = rating;
+    await gameService.saveGame(game: existing);
+  }
+
+  Future<void> saveDateStarted(DateTime? date) async {
+    if (game.value == null) return;
+    final existing = getSavedModel();
+    existing.dateStarted = date;
+    await gameService.saveGame(game: existing);
+  }
+
+  Future<void> saveDateFinished(DateTime? date) async {
+    if (game.value == null) return;
+    final existing = getSavedModel();
+    existing.dateFinished = date;
+    await gameService.saveGame(game: existing);
+  }
+
+  Future<void> saveUserReview(String text) async {
+    if (game.value == null) return;
+    final existing = getSavedModel();
+    existing.userReview = text.isEmpty ? null : text;
+    await gameService.saveGame(game: existing);
+  }
+
+  Future<void> savePlatformPlayed(String? platform) async {
+    if (game.value == null) return;
+    final existing = getSavedModel();
+    existing.platformPlayed = platform;
+    await gameService.saveGame(game: existing);
   }
 }

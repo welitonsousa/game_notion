@@ -35,6 +35,8 @@ dependencies:
   zod_validation: ^1.0.5
   path_provider: ^2.1.6
   path_provider_windows: ^2.3.0
+  flutter_rating_bar: ^4.0.1
+  intl: ^0.20.3
 dev_dependencies:
   flutter_test:
     sdk: flutter
