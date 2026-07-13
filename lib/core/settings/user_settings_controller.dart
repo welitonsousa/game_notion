@@ -20,6 +20,7 @@ class UserSettingsController extends ChangeNotifier {
     final res = GetStorage().read('settings');
     if (res != null) {
       instance.settings = SettingsModel.fromJson(res);
+      instance.notifyListeners();
     }
     await getListStates();
     return instance.settings;

@@ -16,6 +16,7 @@ Future<void> main() async {
 
   runApp(const SplashMain());
   await AppInitialize.initialize();
+  await UserSettingsController.initialize();
 
   runApp(const MyApp());
 }
@@ -75,7 +76,7 @@ class _MyAppState extends State<MyApp> {
             title: 'Game Notion',
             darkTheme: dark,
             theme: dark,
-            themeMode: ThemeMode.dark,
+            themeMode: settings.settings.themeMode,
             debugShowCheckedModeBanner: false,
             initialRoute: TwitchCredentialsStore.hasSavedCredentials()
                 ? AppPages.signIn
