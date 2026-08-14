@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:game_notion/core/settings/app_initialize.dart';
 import 'package:game_notion/core/settings/twitch_credentials_store.dart';
 import 'package:game_notion/core/settings/user_settings_controller.dart';
@@ -76,8 +77,15 @@ class _MyAppState extends State<MyApp> {
             title: 'Game Notion',
             darkTheme: dark,
             theme: dark,
+            
+            locale: Get.deviceLocale,
             themeMode: settings.settings.themeMode,
             debugShowCheckedModeBanner: false,
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
             initialRoute: TwitchCredentialsStore.hasSavedCredentials()
                 ? AppPages.signIn
                 : AppPages.twitchSetup,

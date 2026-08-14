@@ -28,6 +28,7 @@ class UserSettingsController extends ChangeNotifier {
 
   static Future<void> getListStates() async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return;
     final firebase = FirebaseFirestore.instance;
     final res = await firebase.collection(uid!).doc('settings').get();
     final states = res.data()?['gameStates'] ?? [];

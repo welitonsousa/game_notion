@@ -64,48 +64,52 @@ class _HomePageState extends AppState<HomePage, HomeController> {
             ),
           ),
           child: Visibility(
-          visible: controller.loading.value,
-          replacement: PageView.builder(
-            itemCount:
-                UserSettingsController.instance.settings.gameStates.length,
-            onPageChanged: (value) {
-              controller.page.value = value;
-            },
-            controller: controller.pageViewController,
-            itemBuilder: (c, i) {
-              final state =
-                  UserSettingsController.instance.settings.gameStates[i];
-              return Obx(() {
-                final games = controller.games(state);
-                return Visibility(
-                  visible: controller.games(state).isNotEmpty,
-                  replacement: const AppEmpty(),
-                  child: GridView.builder(
-                    padding: const EdgeInsets.only(left: 16, right: 16, top: kToolbarHeight + 40, bottom: 120),
-                    gridDelegate:
-                        const SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 200,
-                      mainAxisExtent: 260,
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 16,
+            visible: controller.loading.value,
+            replacement: PageView.builder(
+              itemCount:
+                  UserSettingsController.instance.settings.gameStates.length,
+              onPageChanged: (value) {
+                controller.page.value = value;
+              },
+              controller: controller.pageViewController,
+              itemBuilder: (c, i) {
+                final state =
+                    UserSettingsController.instance.settings.gameStates[i];
+                return Obx(() {
+                  final games = controller.games(state);
+                  return Visibility(
+                    visible: controller.games(state).isNotEmpty,
+                    replacement: const AppEmpty(),
+                    child: GridView.builder(
+                      padding: const EdgeInsets.only(
+                          left: 16,
+                          right: 16,
+                          top: kToolbarHeight + 40,
+                          bottom: 120),
+                      gridDelegate:
+                          const SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent: 200,
+                        mainAxisExtent: 260,
+                        crossAxisSpacing: 16,
+                        mainAxisSpacing: 16,
+                      ),
+                      itemCount: games.length,
+                      itemBuilder: (context, index) {
+                        final game = games[index];
+                        return AppAnimate(
+                          type: AppAnimateType.fadeInUp,
+                          duration: const Duration(milliseconds: 300),
+                          delay: Duration(milliseconds: (index % 8) * 50),
+                          child: GameCardWidget(game: game),
+                        );
+                      },
                     ),
-                    itemCount: games.length,
-                    itemBuilder: (context, index) {
-                      final game = games[index];
-                      return AppAnimate(
-                        type: AppAnimateType.fadeInUp,
-                        duration: const Duration(milliseconds: 300),
-                        delay: Duration(milliseconds: (index % 8) * 50),
-                        child: GameCardWidget(game: game),
-                      );
-                    },
-                  ),
-                );
-              });
-            },
+                  );
+                });
+              },
+            ),
+            child: const AppLoading(),
           ),
-          child: const AppLoading(),
-        ),
         ), // <-- close Container
         floatingActionButton: const SearchGamesWidget(),
         bottomNavigationBar: ClipRRect(
@@ -125,16 +129,18 @@ class _HomePageState extends AppState<HomePage, HomeController> {
                 backgroundColor: Colors.transparent,
                 elevation: 0,
                 currentIndex: controller.page.value,
-               shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12.0), // Adjust radius here
-    ),
+                shape: RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(12.0), // Adjust radius here
+                ),
                 showUnselectedLabels: true,
                 showSelectedLabels: false,
                 snakeViewColor: context.theme.primaryColor,
                 unselectedItemColor: context.theme.unselectedWidgetColor,
                 selectedItemColor: context.theme.unselectedWidgetColor,
                 // snakeShape: SnakeShape.rectangle,
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 onTap: (index) {
                   controller.page.value = index;
                   controller.pageViewController.animateToPage(
@@ -143,12 +149,12 @@ class _HomePageState extends AppState<HomePage, HomeController> {
                     curve: Curves.linear,
                   );
                 },
-                items: UserSettingsController.instance.settings.gameStates.map((e) {
+                items: UserSettingsController.instance.settings.gameStates
+                    .map((e) {
                   return BottomNavigationBarItem(
                     icon: Icon(e.icon),
                     label: e.name,
                     tooltip: e.name,
-                    
                   );
                 }).toList(),
               ),

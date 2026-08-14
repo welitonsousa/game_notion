@@ -5,17 +5,30 @@ import 'package:game_notion/modules/game_detail/game_detail_controller.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class UserProgressWidget extends StatelessWidget {
+class UserProgressWidget extends StatefulWidget {
   final GameDetailController controller;
 
   const UserProgressWidget({super.key, required this.controller});
 
   @override
+  State<UserProgressWidget> createState() => _UserProgressWidgetState();
+}
+
+class _UserProgressWidgetState extends State<UserProgressWidget> {
+  final reviewController = new TextEditingController();
+
+  @override
+  initState() {
+    reviewController.text = widget.controller.getSavedModel().userReview ?? '';
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Obx(() {
-      final savedModel = controller.getSavedModel();
+      final savedModel = widget.controller.getSavedModel();
       final isDark = Theme.of(context).brightness == Brightness.dark;
-      
+
       final dateStarted = savedModel.dateStarted;
       final dateFinished = savedModel.dateFinished;
       final dateFormat = DateFormat('dd/MM/yyyy');
@@ -27,7 +40,9 @@ class UserProgressWidget extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Theme.of(context).cardColor.withValues(alpha: isDark ? 0.4 : 0.7),
+              color: Theme.of(context)
+                  .cardColor
+                  .withValues(alpha: isDark ? 0.4 : 0.7),
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
                 color: Colors.white.withValues(alpha: 0.1),
@@ -54,7 +69,7 @@ class UserProgressWidget extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 20),
-                
+
                 // Rating
                 const Text(
                   'Minha Nota',
@@ -75,13 +90,14 @@ class UserProgressWidget extends StatelessWidget {
                     color: Colors.amber,
                   ),
                   onRatingUpdate: (rating) {
-                    controller.saveUserRating(rating);
+                    widget.controller.saveUserRating(rating);
                   },
                 ),
                 const SizedBox(height: 24),
 
                 // Platform
-                if (controller.game.value?.platforms != null && controller.game.value!.platforms.isNotEmpty) ...[
+                if (widget.controller.game.value?.platforms != null &&
+                    widget.controller.game.value!.platforms.isNotEmpty) ...[
                   const Text(
                     'Jogado em',
                     style: TextStyle(fontWeight: FontWeight.w600),
@@ -90,20 +106,25 @@ class UserProgressWidget extends StatelessWidget {
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
-                    children: controller.game.value!.platforms.map((platform) {
-                      final isSelected = savedModel.platformPlayed == platform.name;
+                    children:
+                        widget.controller.game.value!.platforms.map((platform) {
+                      final isSelected =
+                          savedModel.platformPlayed == platform.name;
                       return ChoiceChip(
                         label: Text(platform.name),
                         selected: isSelected,
                         onSelected: (selected) {
-                          controller.savePlatformPlayed(selected ? platform.name : null);
+                          widget.controller.savePlatformPlayed(
+                              selected ? platform.name : null);
                         },
                         backgroundColor: Colors.transparent,
-                        selectedColor: Theme.of(context).primaryColor.withValues(alpha: 0.3),
+                        selectedColor: Theme.of(context)
+                            .primaryColor
+                            .withValues(alpha: 0.3),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                           side: BorderSide(
-                            color: isSelected 
+                            color: isSelected
                                 ? Theme.of(context).primaryColor
                                 : Colors.white.withValues(alpha: 0.1),
                           ),
@@ -120,36 +141,51 @@ class UserProgressWidget extends StatelessWidget {
                     Expanded(
                       child: _DateButton(
                         label: 'Iniciado em',
-                        date: dateStarted != null ? dateFormat.format(dateStarted) : 'Não definido',
+                        date: dateStarted != null
+                            ? dateFormat.format(dateStarted)
+                            : 'Não definido',
                         icon: Icons.play_circle_outline,
                         onTap: () async {
                           final date = await showDatePicker(
                             context: context,
+                             locale: Get.locale,
                             initialDate: dateStarted ?? DateTime.now(),
                             firstDate: DateTime(1980),
                             lastDate: DateTime.now(),
                           );
-                          if (date != null) controller.saveDateStarted(date);
+                          if (date != null) {
+                            widget.controller.saveDateStarted(date);
+                          }
                         },
-                        onClear: dateStarted != null ? () => controller.saveDateStarted(null) : null,
+                        onClear: dateStarted != null
+                            ? () => widget.controller.saveDateStarted(null)
+                            : null,
                       ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: _DateButton(
                         label: 'Zerado em',
-                        date: dateFinished != null ? dateFormat.format(dateFinished) : 'Não definido',
+                        date: dateFinished != null
+                            ? dateFormat.format(dateFinished)
+                            : 'Não definido',
                         icon: Icons.check_circle_outline,
                         onTap: () async {
                           final date = await showDatePicker(
                             context: context,
-                            initialDate: dateFinished ?? dateStarted ?? DateTime.now(),
+                            locale: Get.locale,
+                            initialDate:
+                                dateFinished ?? dateStarted ?? DateTime.now(),
                             firstDate: DateTime(1980),
                             lastDate: DateTime.now(),
                           );
-                          if (date != null) controller.saveDateFinished(date);
+                          if (date != null) {
+                            widget.controller.saveDateFinished(date);
+                          }
                         },
-                        onClear: dateFinished != null ? () => controller.saveDateFinished(null) : null,
+                        onClear: dateFinished != null
+                            ? () => widget.controller.saveDateFinished(null)
+                            : null,
                       ),
                     ),
                   ],
@@ -163,10 +199,10 @@ class UserProgressWidget extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 TextFormField(
-                  initialValue: savedModel.userReview,
-                  maxLines: 4,
-                  minLines: 1,
-                  textInputAction: TextInputAction.done,
+               
+                  maxLines: 8,
+                  controller: reviewController,
+                  textInputAction: TextInputAction.newline,
                   decoration: InputDecoration(
                     hintText: 'O que achou do jogo?',
                     filled: true,
@@ -177,14 +213,12 @@ class UserProgressWidget extends StatelessWidget {
                     ),
                     contentPadding: const EdgeInsets.all(16),
                   ),
-                  onFieldSubmitted: (value) {
-                    controller.saveUserReview(value);
-                  },
                 ),
                 const SizedBox(height: 8),
-                const Text(
-                  'Pressione Enter/Concluir no teclado para salvar',
-                  style: TextStyle(fontSize: 12, color: Colors.grey),
+                TextButton(
+                  child: const Text('Salvar'),
+                  onPressed: () =>
+                      widget.controller.saveUserReview(reviewController.text),
                 ),
               ],
             ),
@@ -239,12 +273,14 @@ class _DateButton extends StatelessWidget {
               children: [
                 Text(
                   date,
-                  style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 13),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w500, fontSize: 13),
                 ),
                 if (onClear != null)
                   GestureDetector(
                     onTap: onClear,
-                    child: const Icon(Icons.close, size: 16, color: Colors.grey),
+                    child:
+                        const Icon(Icons.close, size: 16, color: Colors.grey),
                   ),
               ],
             )

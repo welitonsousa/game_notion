@@ -36,10 +36,8 @@ class SignInController extends GetxController {
   }
 
   Future<void> signInWithGoogle() async {
-    // late GoogleSignIn google;
     final clientID = DefaultFirebaseOptions.currentPlatform.iosClientId;
-    // print('client id $clientID');
-    // const appID = Env.OAUTH_CLIENT_ID;
+   
 
     if (Platform.isWindows) {
       // await GoogleSignInDart.register(clientId: appID);

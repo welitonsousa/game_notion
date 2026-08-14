@@ -12,5 +12,15 @@
                 "env.prod.json"
             ]
         },
+        {
+            "name": "Release",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "args": [
+                "--dart-define-from-file",
+                "env.prod.json"
+            ]
+        },
     ]
 }

@@ -7,6 +7,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   cupertino_icons: ^1.0.2
   firebase_core: ^4.11.0
   firebase_auth: ^6.5.4
@@ -36,7 +38,7 @@ dependencies:
   path_provider: ^2.1.6
   path_provider_windows: ^2.3.0
   flutter_rating_bar: ^4.0.1
-  intl: ^0.20.3
+  intl: any
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -119,7 +121,9 @@ flutter:
   #
 msix_config:
   display_name: Game Notion
-  publisher_display_name: Game Notion
-  identity_name: GameNotion
+  publisher_display_name: Fastzap
+  publisher: CN=DB3AD0BE-A938-4712-BA47-1CC19B2362E6
+  identity_name: 13382Fastzap.GameNotion
   msix_version: 1.0.0.0
+  store: true
   logo_path: assets\images\logo.png
