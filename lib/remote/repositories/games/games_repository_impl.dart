@@ -5,6 +5,7 @@ import 'package:game_notion/core/rest_client/rest_client.dart';
 import 'package:game_notion/core/settings/env.dart';
 import 'package:game_notion/models/game_model.dart';
 import 'package:game_notion/models/game_small_model.dart';
+import 'package:game_notion/models/time_to_beat_model.dart';
 
 import 'games_repository.dart';
 
@@ -69,7 +70,7 @@ class GameRepositoryImpl implements GameRepository {
   @override
   Future<GameModel> getGameById({required int id}) async {
     final data =
-        '''where id=$id; fields artworks.image_id,cover.image_id,name,summary,screenshots.image_id,similar_games.cover.image_id,similar_games.name,first_release_date,platforms.abbreviation,platforms.name,platforms.slug,videos.name,videos.video_id;''';
+        '''where id=$id; fields artworks.image_id,cover.image_id,name,summary,screenshots.image_id,similar_games.cover.image_id,similar_games.name,first_release_date,platforms.abbreviation,platforms.name,platforms.slug,videos.name,videos.video_id,genres.name,involved_companies.company.name,involved_companies.developer,involved_companies.publisher,game_modes.name,rating,aggregated_rating;''';
     await _twitchSignIn();
     final res = await restClient.post(
       '/games/',
@@ -77,7 +78,23 @@ class GameRepositoryImpl implements GameRepository {
       options: restClient.auth(),
     );
 
-    return GameModel.fromJson(res.data[0]);
+    final game = GameModel.fromJson(res.data[0]);
+    game.timeToBeat = await _fetchTimeToBeat(id);
+    return game;
+  }
+
+  Future<TimeToBeatModel?> _fetchTimeToBeat(int id) async {
+    try {
+      final res = await restClient.post(
+        '/game_time_to_beat/',
+        data: 'where game_id=$id; fields hastily,normally,completely;',
+        options: restClient.auth(),
+      );
+      if (res.data is List && (res.data as List).isNotEmpty) {
+        return TimeToBeatModel.fromJson(res.data[0]);
+      }
+    } catch (_) {}
+    return null;
   }
 
   Future<String> _twitchSignIn() async {

@@ -2,6 +2,7 @@ import 'package:game_notion/models/cover_model.dart';
 import 'package:game_notion/models/game_external_model.dart';
 import 'package:game_notion/models/game_small_model.dart';
 import 'package:game_notion/models/platform_model.dart';
+import 'package:game_notion/models/time_to_beat_model.dart';
 import 'package:game_notion/models/video_model.dart';
 
 class GameModel {
@@ -14,6 +15,14 @@ class GameModel {
   final String summary;
   final List<VideoModel> videos;
   final List<CoverModel> artworks;
+  final DateTime? firstReleaseDate;
+  final List<String> genres;
+  final List<String> developers;
+  final List<String> publishers;
+  final List<String> gameModes;
+  final double? rating;
+  final double? aggregatedRating;
+  TimeToBeatModel? timeToBeat;
   List<int> state;
 
   GameModel({
@@ -27,9 +36,19 @@ class GameModel {
     required this.artworks,
     this.cover,
     required this.state,
+    this.firstReleaseDate,
+    this.genres = const [],
+    this.developers = const [],
+    this.publishers = const [],
+    this.gameModes = const [],
+    this.rating,
+    this.aggregatedRating,
+    this.timeToBeat,
   });
 
   factory GameModel.fromJson(json) {
+    final involvedCompanies = (json['involved_companies'] ?? []) as List;
+
     final res = GameModel(
       id: json['id'],
       state: json['state'] != null ? List<int>.from(json['state']) : [],
@@ -50,6 +69,32 @@ class GameModel {
       artworks: (json['artworks'] ?? [])
           .map<CoverModel>(CoverModel.fromJson)
           .toList(),
+      firstReleaseDate: json['first_release_date'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(
+              (json['first_release_date'] as int) * 1000)
+          : null,
+      genres: (json['genres'] ?? [])
+          .map<String>((e) => (e['name'] ?? '') as String)
+          .where((e) => e.isNotEmpty)
+          .toList(),
+      developers: involvedCompanies
+          .where((e) => e['developer'] == true && e['company'] != null)
+          .map<String>((e) => (e['company']['name'] ?? '') as String)
+          .where((e) => e.isNotEmpty)
+          .toList(),
+      publishers: involvedCompanies
+          .where((e) => e['publisher'] == true && e['company'] != null)
+          .map<String>((e) => (e['company']['name'] ?? '') as String)
+          .where((e) => e.isNotEmpty)
+          .toList(),
+      gameModes: (json['game_modes'] ?? [])
+          .map<String>((e) => (e['name'] ?? '') as String)
+          .where((e) => e.isNotEmpty)
+          .toList(),
+      rating: json['rating'] != null ? (json['rating'] as num).toDouble() : null,
+      aggregatedRating: json['aggregated_rating'] != null
+          ? (json['aggregated_rating'] as num).toDouble()
+          : null,
     );
 
     return res;

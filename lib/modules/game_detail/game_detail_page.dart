@@ -15,6 +15,7 @@ import 'package:search_select/search_select.dart';
 
 import './game_detail_controller.dart';
 import 'widgets/user_progress_widget.dart';
+import 'widgets/game_info_widget.dart';
 import 'widgets/game_item_detail.dart';
 import 'widgets/list_videos_widget.dart';
 import 'widgets/platforms_widget.dart';
@@ -228,8 +229,15 @@ class _GameDetailPageState extends State<GameDetailPage> {
                       delay: const Duration(milliseconds: 180),
                       child: UserProgressWidget(controller: controller),
                     ),
+                    const SizedBox(height: 24),
+
+                    AppAnimate(
+                      type: AppAnimateType.fadeInUp,
+                      delay: const Duration(milliseconds: 190),
+                      child: GameInfoWidget(game: game),
+                    ),
                     const SizedBox(height: 32),
-                    
+
                     if (game.summary.isNotEmpty) ...[
                       AppAnimate(
                         type: AppAnimateType.fadeInUp,
