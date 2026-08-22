@@ -139,6 +139,9 @@ class _HomePageState extends AppState<HomePage, HomeController> {
                 unselectedItemColor: context.theme.unselectedWidgetColor,
                 selectedItemColor: context.theme.unselectedWidgetColor,
                 // snakeShape: SnakeShape.rectangle,
+                unselectedLabelStyle: const TextStyle(
+                  overflow: TextOverflow.ellipsis,
+                ),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 onTap: (index) {

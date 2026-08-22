@@ -2,18 +2,23 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:game_notion/core/settings/app_initialize.dart';
 import 'package:game_notion/core/settings/twitch_credentials_store.dart';
 import 'package:game_notion/core/settings/user_settings_controller.dart';
+import 'package:game_notion/firebase_options.dart';
 import 'package:game_notion/routers/pages.dart';
 import 'package:get/get.dart';
 
 import 'splash_main.dart';
- 
+
 Future<void> main() async {
   HttpOverrides.global = MyHttpOverrides();
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp();
 
   runApp(const SplashMain());
   await AppInitialize.initialize();
@@ -37,7 +42,8 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-    _authSubscription = FirebaseAuth.instance.userChanges().listen((user) async {
+    _authSubscription =
+        FirebaseAuth.instance.userChanges().listen((user) async {
       if (user != null) {
         if (Get.currentRoute != AppPages.home) {
           await UserSettingsController.initialize();
@@ -66,18 +72,17 @@ class _MyAppState extends State<MyApp> {
     return AnimatedBuilder(
         animation: UserSettingsController.instance,
         builder: (context, child) {
-            final dark = ThemeData.dark(useMaterial3: true).copyWith(
-              primaryColor: settings.settings.themeColor,
-              textTheme: ThemeData.dark(useMaterial3: true).textTheme.apply(
-                    fontFamily: settings.settings.fontName,
-                  ),
-            );
-        
+          final dark = ThemeData.dark(useMaterial3: true).copyWith(
+            primaryColor: settings.settings.themeColor,
+            textTheme: ThemeData.dark(useMaterial3: true).textTheme.apply(
+                  fontFamily: settings.settings.fontName,
+                ),
+          );
+
           return GetMaterialApp(
             title: 'Game Notion',
             darkTheme: dark,
             theme: dark,
-            
             locale: Get.deviceLocale,
             themeMode: settings.settings.themeMode,
             debugShowCheckedModeBanner: false,

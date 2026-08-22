@@ -2,7 +2,7 @@
   "project_info": {
     "project_number": "682329935211",
     "project_id": "game-notion",
-    "storage_bucket": "game-notion.appspot.com"
+    "storage_bucket": "game-notion.firebasestorage.app"
   },
   "client": [
     {
@@ -12,7 +12,12 @@
           "package_name": "com.gamenotion.br.game_notion"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "682329935211-bjipvp31156ml2v93bvd5s5hsq27sesu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBv6rnnAr5VYe1kaQ_T0-3WSnHKM-nNJLg"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "682329935211-bjipvp31156ml2v93bvd5s5hsq27sesu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "682329935211-4sn68udl3qv116b79v08580i172j3ia3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gamenotion.br.gameNotion"
+              }
+            }
+          ]
         }
       }
     }

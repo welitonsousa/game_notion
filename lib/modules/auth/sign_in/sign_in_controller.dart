@@ -37,13 +37,14 @@ class SignInController extends GetxController {
 
   Future<void> signInWithGoogle() async {
     final clientID = DefaultFirebaseOptions.currentPlatform.iosClientId;
+    final androidclientID = DefaultFirebaseOptions.currentPlatform.androidClientId;
    
-
+    print(androidclientID);
     if (Platform.isWindows) {
       // await GoogleSignInDart.register(clientId: appID);
       GoogleSignIn.instance;
     } else if (Platform.isAndroid) {
-      GoogleSignIn.instance;
+      await GoogleSignIn.instance.initialize();
     } else if (Platform.isIOS) {
       await GoogleSignIn.instance.initialize(clientId: clientID);
     }
