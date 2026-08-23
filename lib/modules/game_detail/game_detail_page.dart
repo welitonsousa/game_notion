@@ -5,6 +5,7 @@ import 'package:game_notion/core/settings/user_settings_controller.dart';
 import 'package:game_notion/core/ui/widgets/app_error.dart';
 import 'package:game_notion/core/ui/widgets/app_image.dart';
 import 'package:game_notion/core/ui/widgets/app_loading.dart';
+import 'package:game_notion/core/widgets/app_search_select.dart';
 import 'package:game_notion/models/game_item_list_model.dart';
 import 'package:game_notion/modules/game_detail/widgets/list_similar_games.dart';
 import 'package:game_notion/modules/game_detail/widgets/screenshots_grid.dart';
@@ -16,7 +17,7 @@ import 'package:search_select/search_select.dart';
 import './game_detail_controller.dart';
 import 'widgets/user_progress_widget.dart';
 import 'widgets/game_info_widget.dart';
-import 'widgets/game_item_detail.dart';
+import 'widgets/languages_table_widget.dart';
 import 'widgets/list_videos_widget.dart';
 import 'widgets/platforms_widget.dart';
 
@@ -59,7 +60,9 @@ class _GameDetailPageState extends State<GameDetailPage> {
         elevation: 0,
         iconTheme: const IconThemeData(
           color: Colors.white,
-          shadows: [Shadow(color: Colors.black54, blurRadius: 4, offset: Offset(0, 1))],
+          shadows: [
+            Shadow(color: Colors.black54, blurRadius: 4, offset: Offset(0, 1))
+          ],
         ),
       ),
       body: Container(
@@ -78,7 +81,7 @@ class _GameDetailPageState extends State<GameDetailPage> {
           } else if (controller.error.value) {
             return AppError(onRetry: controller.findGame);
           }
-          
+
           final game = controller.game.value!;
           return ListView(
             padding: EdgeInsets.zero,
@@ -91,7 +94,8 @@ class _GameDetailPageState extends State<GameDetailPage> {
                     GestureDetector(
                       onTap: () => showImageViewer(
                         context,
-                        AppImageCached.provider(game.artworks.first.imageId.imageURL),
+                        AppImageCached.provider(
+                            game.artworks.first.imageId.imageURL),
                         useSafeArea: true,
                         swipeDismissible: true,
                         immersive: true,
@@ -191,10 +195,11 @@ class _GameDetailPageState extends State<GameDetailPage> {
                     ),
                 ],
               ),
-              
+
               // Content Section
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -211,38 +216,36 @@ class _GameDetailPageState extends State<GameDetailPage> {
                       ),
                     ),
                     const SizedBox(height: 24),
-                    
                     AppAnimate(
                       type: AppAnimateType.fadeInUp,
                       delay: const Duration(milliseconds: 150),
-                      child: SearchSelect<GameItemListModel>(
+                      child: AppSearchSelect<GameItemListModel>(
                         selectedItems: controller.gameState ?? [],
                         onChange: controller.changeGameState,
                         label: 'Estado do jogo',
+                        borderRadius: 16,
+                        // everShowLabel: false,
                         items: UserSettingsController.i.states,
                       ),
                     ),
                     const SizedBox(height: 24),
-                    
                     AppAnimate(
                       type: AppAnimateType.fadeInUp,
                       delay: const Duration(milliseconds: 180),
                       child: UserProgressWidget(controller: controller),
                     ),
                     const SizedBox(height: 24),
-
                     AppAnimate(
                       type: AppAnimateType.fadeInUp,
                       delay: const Duration(milliseconds: 190),
                       child: GameInfoWidget(game: game),
                     ),
                     const SizedBox(height: 32),
-
                     if (game.summary.isNotEmpty) ...[
-                      AppAnimate(
+                      const AppAnimate(
                         type: AppAnimateType.fadeInUp,
-                        delay: const Duration(milliseconds: 200),
-                        child: const Text(
+                        delay: Duration(milliseconds: 200),
+                        child: Text(
                           'Sobre',
                           style: TextStyle(
                             fontSize: 20,
@@ -260,18 +263,21 @@ class _GameDetailPageState extends State<GameDetailPage> {
                           style: TextStyle(
                             fontSize: 16,
                             height: 1.5,
-                            color: Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.85),
+                            color: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.color
+                                ?.withValues(alpha: 0.85),
                           ),
                         ),
                       ),
                       const SizedBox(height: 32),
                     ],
-
                     if (game.platforms.isNotEmpty) ...[
-                      AppAnimate(
+                      const AppAnimate(
                         type: AppAnimateType.fadeInUp,
-                        delay: const Duration(milliseconds: 300),
-                        child: const Text(
+                        delay: Duration(milliseconds: 300),
+                        child: Text(
                           'Plataformas',
                           style: TextStyle(
                             fontSize: 20,
@@ -287,12 +293,78 @@ class _GameDetailPageState extends State<GameDetailPage> {
                       ),
                       const SizedBox(height: 32),
                     ],
-
-                    if (game.similarGames.isNotEmpty) ...[
+                    if (game.languageSupports.isNotEmpty) ...[
+                      const AppAnimate(
+                        type: AppAnimateType.fadeInUp,
+                        delay: Duration(milliseconds: 380),
+                        child: Text(
+                          'Idiomas',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
                       AppAnimate(
                         type: AppAnimateType.fadeInUp,
                         delay: const Duration(milliseconds: 400),
-                        child: const Text(
+                        child: LanguagesTableWidget(
+                            languageSupports: game.languageSupports),
+                      ),
+                      const SizedBox(height: 32),
+                    ],
+                    if (game.screenshots.isNotEmpty) ...[
+                      const AppAnimate(
+                        type: AppAnimateType.fadeInUp,
+                        delay: Duration(milliseconds: 500),
+                        child: Text(
+                          'Capturas de tela',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      AppAnimate(
+                        type: AppAnimateType.fadeInUp,
+                        delay: const Duration(milliseconds: 520),
+                        child: ScreenshotsGridView(
+                          screenshots: game.screenshots
+                              .map((e) => e.imageId.imageURL)
+                              .toList(),
+                        ),
+                      ),
+                      const SizedBox(height: 32),
+                    ],
+                    if (game.videos.isNotEmpty) ...[
+                      const AppAnimate(
+                        type: AppAnimateType.fadeInUp,
+                        delay: Duration(milliseconds: 550),
+                        child: Text(
+                          'Vídeos',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      AppAnimate(
+                        type: AppAnimateType.fadeInUp,
+                        delay: const Duration(milliseconds: 570),
+                        child: ListVideosWidget(
+                          videos: game.videos,
+                        ),
+                      ),
+                      const SizedBox(height: 32),
+                    ],
+                    const SizedBox(height: 32),
+                    if (game.similarGames.isNotEmpty) ...[
+                      const AppAnimate(
+                        type: AppAnimateType.fadeInUp,
+                        delay: Duration(milliseconds: 400),
+                        child: Text(
                           'Jogos similares',
                           style: TextStyle(
                             fontSize: 20,
@@ -300,7 +372,6 @@ class _GameDetailPageState extends State<GameDetailPage> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 16),
                       AppAnimate(
                         type: AppAnimateType.fadeInUp,
                         delay: const Duration(milliseconds: 450),
@@ -310,37 +381,6 @@ class _GameDetailPageState extends State<GameDetailPage> {
                       ),
                       const SizedBox(height: 32),
                     ],
-
-                    if (game.screenshots.isNotEmpty) ...[
-                      AppAnimate(
-                        type: AppAnimateType.fadeInUp,
-                        delay: const Duration(milliseconds: 500),
-                        child: GameItemDetail(
-                          title: 'Capturas de tela',
-                          child: ScreenshotsGridView(
-                            screenshots: game.screenshots
-                                .map((e) => e.imageId.imageURL)
-                                .toList(),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 32),
-                    ],
-
-                    if (game.videos.isNotEmpty) ...[
-                      AppAnimate(
-                        type: AppAnimateType.fadeInUp,
-                        delay: const Duration(milliseconds: 550),
-                        child: GameItemDetail(
-                          title: 'Vídeos',
-                          child: ListVideosWidget(
-                            videos: game.videos,
-                          ),
-                        ),
-                      ),
-                    ],
-                    
-                    const SizedBox(height: 80)
                   ],
                 ),
               ),

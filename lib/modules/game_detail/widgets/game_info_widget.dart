@@ -77,9 +77,19 @@ class GameInfoWidget extends StatelessWidget {
               ),
               if (hasTimeToBeat) ...[
                 const SizedBox(height: 24),
-                const Text(
-                  'Duração estimada',
-                  style: TextStyle(fontWeight: FontWeight.w600),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Duração estimada',
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                    if (timeToBeat.count != null && timeToBeat.count! > 0)
+                      Text(
+                        'baseado em ${timeToBeat.count} jogadores',
+                        style: const TextStyle(fontSize: 11, color: Colors.grey),
+                      ),
+                  ],
                 ),
                 const SizedBox(height: 12),
                 Row(
@@ -87,16 +97,16 @@ class GameInfoWidget extends StatelessWidget {
                     if (timeToBeat.hastily != null)
                       Expanded(
                         child: _DurationTile(
-                          label: 'Rápido',
+                          label: 'História',
                           hours: timeToBeat.hastily!,
-                          icon: Icons.fast_forward_rounded,
+                          icon: Icons.menu_book_rounded,
                         ),
                       ),
                     if (timeToBeat.hastily != null) const SizedBox(width: 12),
                     if (timeToBeat.normally != null)
                       Expanded(
                         child: _DurationTile(
-                          label: 'Normal',
+                          label: 'História + Secundárias',
                           hours: timeToBeat.normally!,
                           icon: Icons.timer_outlined,
                         ),
@@ -236,6 +246,7 @@ class _DurationTile extends StatelessWidget {
           const SizedBox(height: 2),
           Text(
             label,
+            textAlign: TextAlign.center,
             style: const TextStyle(fontSize: 11, color: Colors.grey),
           ),
         ],

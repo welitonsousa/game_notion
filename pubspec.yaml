@@ -39,6 +39,7 @@ dependencies:
   path_provider_windows: ^2.3.0
   flutter_rating_bar: ^4.0.1
   intl: any
+  translator: ^1.0.4+1
 dev_dependencies:
   flutter_test:
     sdk: flutter

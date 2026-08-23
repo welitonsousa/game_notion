@@ -1,6 +1,7 @@
 import 'package:game_notion/models/cover_model.dart';
 import 'package:game_notion/models/game_external_model.dart';
 import 'package:game_notion/models/game_small_model.dart';
+import 'package:game_notion/models/language_support_model.dart';
 import 'package:game_notion/models/platform_model.dart';
 import 'package:game_notion/models/time_to_beat_model.dart';
 import 'package:game_notion/models/video_model.dart';
@@ -12,7 +13,7 @@ class GameModel {
   final String name;
   final List<PlatformModel> platforms;
   final List<CoverModel> screenshots;
-  final String summary;
+  String summary;
   final List<VideoModel> videos;
   final List<CoverModel> artworks;
   final DateTime? firstReleaseDate;
@@ -22,6 +23,7 @@ class GameModel {
   final List<String> gameModes;
   final double? rating;
   final double? aggregatedRating;
+  final List<LanguageSupportModel> languageSupports;
   TimeToBeatModel? timeToBeat;
   List<int> state;
 
@@ -43,6 +45,7 @@ class GameModel {
     this.gameModes = const [],
     this.rating,
     this.aggregatedRating,
+    this.languageSupports = const [],
     this.timeToBeat,
   });
 
@@ -95,6 +98,10 @@ class GameModel {
       aggregatedRating: json['aggregated_rating'] != null
           ? (json['aggregated_rating'] as num).toDouble()
           : null,
+      languageSupports: ((json['language_supports'] ?? []) as List)
+          .map<LanguageSupportModel>((e) => LanguageSupportModel.fromJson(e))
+          .where((e) => e.language.isNotEmpty && e.supportType.isNotEmpty)
+          .toList(),
     );
 
     return res;

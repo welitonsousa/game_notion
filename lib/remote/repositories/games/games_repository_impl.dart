@@ -70,7 +70,7 @@ class GameRepositoryImpl implements GameRepository {
   @override
   Future<GameModel> getGameById({required int id}) async {
     final data =
-        '''where id=$id; fields artworks.image_id,cover.image_id,name,summary,screenshots.image_id,similar_games.cover.image_id,similar_games.name,first_release_date,platforms.abbreviation,platforms.name,platforms.slug,videos.name,videos.video_id,genres.name,involved_companies.company.name,involved_companies.developer,involved_companies.publisher,game_modes.name,rating,aggregated_rating;''';
+        '''where id=$id; fields *,language_supports.*,language_supports.language_support_type.*,language_supports.language.*,artworks.image_id,cover.image_id,name,summary,screenshots.image_id,similar_games.cover.image_id,similar_games.name,first_release_date,platforms.abbreviation,platforms.name,platforms.slug,videos.name,videos.video_id,genres.name,involved_companies.company.name,involved_companies.developer,involved_companies.publisher,game_modes.name,rating,aggregated_rating;''';
     await _twitchSignIn();
     final res = await restClient.post(
       '/games/',
@@ -86,8 +86,8 @@ class GameRepositoryImpl implements GameRepository {
   Future<TimeToBeatModel?> _fetchTimeToBeat(int id) async {
     try {
       final res = await restClient.post(
-        '/game_time_to_beat/',
-        data: 'where game_id=$id; fields hastily,normally,completely;',
+        '/game_time_to_beats/',
+        data: 'fields *; where game_id=$id;',
         options: restClient.auth(),
       );
       if (res.data is List && (res.data as List).isNotEmpty) {

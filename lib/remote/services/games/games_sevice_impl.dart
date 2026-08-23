@@ -2,6 +2,7 @@ import 'package:game_notion/models/game_model.dart';
 import 'package:game_notion/models/game_small_model.dart';
 import 'package:game_notion/remote/repositories/games/games_repository.dart';
 import 'package:game_notion/remote/services/games/games_sevice.dart';
+import 'package:translator/translator.dart';
 
 class GameServiceImpl implements GameService {
   final GameRepository gameRepository;
@@ -14,8 +15,12 @@ class GameServiceImpl implements GameService {
   }
 
   @override
-  Future<GameModel> getGameById({required int id}) {
-    return gameRepository.getGameById(id: id);
+  Future<GameModel> getGameById({required int id}) async {
+
+    final res = await gameRepository.getGameById(id: id);
+    final translatedSummary = await res.summary.translate(to: 'pt');
+    res.summary = translatedSummary.text;
+    return res;
   }
 
   @override

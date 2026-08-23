@@ -62,6 +62,7 @@ class _HomePageState extends AppState<HomePage, HomeController> {
           ],
         ),
         body: Container(
+          padding: const EdgeInsets.only(top: 12),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: isDark
@@ -85,7 +86,13 @@ class _HomePageState extends AppState<HomePage, HomeController> {
                     curve: Curves.easeInOut,
                     alignment: Alignment.topCenter,
                     child: controller.showFilters.value
-                        ? GameFiltersPanel(controller: controller)
+                        ? ConstrainedBox(
+                            constraints: BoxConstraints(
+                              maxHeight:
+                                  MediaQuery.of(context).size.height * 0.55,
+                            ),
+                            child: GameFiltersPanel(controller: controller),
+                          )
                         : const SizedBox(width: double.infinity),
                   )),
               Expanded(

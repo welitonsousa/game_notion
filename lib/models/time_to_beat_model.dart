@@ -2,14 +2,16 @@ class TimeToBeatModel {
   final double? hastily;
   final double? normally;
   final double? completely;
+  final int? count;
 
-  TimeToBeatModel({this.hastily, this.normally, this.completely});
+  TimeToBeatModel({this.hastily, this.normally, this.completely, this.count});
 
   factory TimeToBeatModel.fromJson(json) {
     return TimeToBeatModel(
       hastily: _secondsToHours(json['hastily']),
       normally: _secondsToHours(json['normally']),
       completely: _secondsToHours(json['completely']),
+      count: json['count'] != null ? (json['count'] as num).toInt() : null,
     );
   }
 
