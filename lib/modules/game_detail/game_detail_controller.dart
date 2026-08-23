@@ -25,8 +25,13 @@ class GameDetailController extends GetxController {
 
   GameSmallModel getSavedModel() {
     final index = homeController.allGames.indexWhere((e) => e.id == gameId);
-    if (index != -1) return homeController.allGames[index];
-    return game.value!.toSmallModel();
+    if (index == -1) return game.value!.toSmallModel();
+
+    final existing = homeController.allGames[index];
+    if (existing.genres.isEmpty && (game.value?.genres.isNotEmpty ?? false)) {
+      existing.genres = game.value!.genres;
+    }
+    return existing;
   }
 
   final loading = true.obs;

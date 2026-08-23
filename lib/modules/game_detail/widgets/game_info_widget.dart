@@ -47,10 +47,8 @@ class GameInfoWidget extends StatelessWidget {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
-              Wrap(
-                spacing: 24,
-                runSpacing: 16,
-                children: [
+              _InfoGrid(
+                tiles: [
                   if (game.firstReleaseDate != null)
                     _InfoTile(
                       icon: Icons.calendar_today_rounded,
@@ -153,6 +151,32 @@ class GameInfoWidget extends StatelessWidget {
   }
 }
 
+class _InfoGrid extends StatelessWidget {
+  final List<Widget> tiles;
+  const _InfoGrid({required this.tiles});
+
+  @override
+  Widget build(BuildContext context) {
+    final rows = <Widget>[];
+    for (var i = 0; i < tiles.length; i += 2) {
+      final hasPair = i + 1 < tiles.length;
+      if (rows.isNotEmpty) rows.add(const SizedBox(height: 16));
+      rows.add(
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(child: tiles[i]),
+            const SizedBox(width: 16),
+            Expanded(child: hasPair ? tiles[i + 1] : const SizedBox.shrink()),
+          ],
+        ),
+      );
+    }
+
+    return Column(children: rows);
+  }
+}
+
 class _InfoTile extends StatelessWidget {
   final IconData icon;
   final String label;
@@ -162,29 +186,26 @@ class _InfoTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 220),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            children: [
-              Icon(icon, size: 16, color: Theme.of(context).primaryColor),
-              const SizedBox(width: 6),
-              Text(
-                label,
-                style: const TextStyle(fontSize: 12, color: Colors.grey),
-              ),
-            ],
-          ),
-          const SizedBox(height: 4),
-          Text(
-            value,
-            style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
-          ),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          children: [
+            Icon(icon, size: 16, color: Theme.of(context).primaryColor),
+            const SizedBox(width: 6),
+            Text(
+              label,
+              style: const TextStyle(fontSize: 12, color: Colors.grey),
+            ),
+          ],
+        ),
+        const SizedBox(height: 4),
+        Text(
+          value,
+          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
+        ),
+      ],
     );
   }
 }

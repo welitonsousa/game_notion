@@ -8,6 +8,7 @@ import 'package:game_notion/core/ui/widgets/app_drawer.dart';
 import 'package:game_notion/core/ui/widgets/app_empty.dart';
 import 'package:game_notion/core/ui/widgets/app_loading.dart';
 import 'package:game_notion/modules/home/widgets/game_card_widget.dart';
+import 'package:game_notion/modules/home/widgets/game_filters_panel.dart';
 import 'package:game_notion/modules/home/widgets/search_games_widget.dart';
 import 'package:game_notion/core/ui/widgets/app_animate.dart';
 import 'package:get/get.dart';
@@ -46,6 +47,19 @@ class _HomePageState extends AppState<HomePage, HomeController> {
             });
           },
           hint: 'Pesquisar jogos salvos',
+          actions: [
+            Obx(() {
+              final count = controller.filters.value.activeCount;
+              return IconButton(
+                icon: Badge(
+                  label: Text('$count'),
+                  isLabelVisible: count > 0,
+                  child: const Icon(Icons.filter_list_rounded),
+                ),
+                onPressed: () => controller.showFilters.toggle(),
+              );
+            }),
+          ],
         ),
         body: Container(
           decoration: BoxDecoration(
@@ -63,52 +77,64 @@ class _HomePageState extends AppState<HomePage, HomeController> {
               end: Alignment.bottomCenter,
             ),
           ),
-          child: Visibility(
-            visible: controller.loading.value,
-            replacement: PageView.builder(
-              itemCount:
-                  UserSettingsController.instance.settings.gameStates.length,
-              onPageChanged: (value) {
-                controller.page.value = value;
-              },
-              controller: controller.pageViewController,
-              itemBuilder: (c, i) {
-                final state =
-                    UserSettingsController.instance.settings.gameStates[i];
-                return Obx(() {
-                  final games = controller.games(state);
-                  return Visibility(
-                    visible: controller.games(state).isNotEmpty,
-                    replacement: const AppEmpty(),
-                    child: GridView.builder(
-                      padding: const EdgeInsets.only(
-                          left: 16,
-                          right: 16,
-                          top: kToolbarHeight + 40,
-                          bottom: 120),
-                      gridDelegate:
-                          const SliverGridDelegateWithMaxCrossAxisExtent(
-                        maxCrossAxisExtent: 200,
-                        mainAxisExtent: 260,
-                        crossAxisSpacing: 16,
-                        mainAxisSpacing: 16,
-                      ),
-                      itemCount: games.length,
-                      itemBuilder: (context, index) {
-                        final game = games[index];
-                        return AppAnimate(
-                          type: AppAnimateType.fadeInUp,
-                          duration: const Duration(milliseconds: 300),
-                          delay: Duration(milliseconds: (index % 8) * 50),
-                          child: GameCardWidget(game: game),
+          child: Column(
+            children: [
+              const SizedBox(height: kToolbarHeight + 16),
+              Obx(() => AnimatedSize(
+                    duration: const Duration(milliseconds: 250),
+                    curve: Curves.easeInOut,
+                    alignment: Alignment.topCenter,
+                    child: controller.showFilters.value
+                        ? GameFiltersPanel(controller: controller)
+                        : const SizedBox(width: double.infinity),
+                  )),
+              Expanded(
+                child: Visibility(
+                  visible: controller.loading.value,
+                  replacement: PageView.builder(
+                    itemCount: UserSettingsController
+                        .instance.settings.gameStates.length,
+                    onPageChanged: (value) {
+                      controller.page.value = value;
+                    },
+                    controller: controller.pageViewController,
+                    itemBuilder: (c, i) {
+                      final state = UserSettingsController
+                          .instance.settings.gameStates[i];
+                      return Obx(() {
+                        final games = controller.games(state);
+                        return Visibility(
+                          visible: controller.games(state).isNotEmpty,
+                          replacement: const AppEmpty(),
+                          child: GridView.builder(
+                            padding: const EdgeInsets.only(
+                                left: 16, right: 16, top: 8, bottom: 120),
+                            gridDelegate:
+                                const SliverGridDelegateWithMaxCrossAxisExtent(
+                              maxCrossAxisExtent: 200,
+                              mainAxisExtent: 260,
+                              crossAxisSpacing: 16,
+                              mainAxisSpacing: 16,
+                            ),
+                            itemCount: games.length,
+                            itemBuilder: (context, index) {
+                              final game = games[index];
+                              return AppAnimate(
+                                type: AppAnimateType.fadeInUp,
+                                duration: const Duration(milliseconds: 300),
+                                delay: Duration(milliseconds: (index % 8) * 50),
+                                child: GameCardWidget(game: game),
+                              );
+                            },
+                          ),
                         );
-                      },
-                    ),
-                  );
-                });
-              },
-            ),
-            child: const AppLoading(),
+                      });
+                    },
+                  ),
+                  child: const AppLoading(),
+                ),
+              ),
+            ],
           ),
         ), // <-- close Container
         floatingActionButton: const SearchGamesWidget(),

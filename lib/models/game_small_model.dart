@@ -13,6 +13,7 @@ class GameSmallModel {
   DateTime? dateFinished;
   String? userReview;
   String? platformPlayed;
+  List<String> genres;
 
   GameSmallModel({
     required this.id,
@@ -24,6 +25,7 @@ class GameSmallModel {
     this.dateFinished,
     this.userReview,
     this.platformPlayed,
+    this.genres = const [],
   });
 
   List<GameItemListModel> get itemsList {
@@ -46,6 +48,7 @@ class GameSmallModel {
       dateFinished: json['dateFinished'] != null ? DateTime.parse(json['dateFinished']) : null,
       userReview: json['userReview'],
       platformPlayed: json['platformPlayed'],
+      genres: json['genres'] != null ? List<String>.from(json['genres']) : const [],
     );
 
     return res;
@@ -62,6 +65,7 @@ class GameSmallModel {
       if (dateFinished != null) 'dateFinished': dateFinished!.toIso8601String(),
       if (userReview != null) 'userReview': userReview,
       if (platformPlayed != null) 'platformPlayed': platformPlayed,
+      if (genres.isNotEmpty) 'genres': genres,
     };
   }
 }

@@ -73,7 +73,7 @@ class GameModel {
           ? DateTime.fromMillisecondsSinceEpoch(
               (json['first_release_date'] as int) * 1000)
           : null,
-      genres: (json['genres'] ?? [])
+      genres: ((json['genres'] ?? []) as List)
           .map<String>((e) => (e['name'] ?? '') as String)
           .where((e) => e.isNotEmpty)
           .toList(),
@@ -87,7 +87,7 @@ class GameModel {
           .map<String>((e) => (e['company']['name'] ?? '') as String)
           .where((e) => e.isNotEmpty)
           .toList(),
-      gameModes: (json['game_modes'] ?? [])
+      gameModes: ((json['game_modes'] ?? []) as List)
           .map<String>((e) => (e['name'] ?? '') as String)
           .where((e) => e.isNotEmpty)
           .toList(),
@@ -106,6 +106,7 @@ class GameModel {
       cover: cover,
       name: name,
       state: state,
+      genres: genres,
     );
   }
 }
