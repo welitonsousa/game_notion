@@ -5,9 +5,25 @@ import 'package:game_notion/modules/home/home_controller.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class GameFiltersPanel extends StatelessWidget {
+class GameFiltersPanel extends StatefulWidget {
   final HomeController controller;
   const GameFiltersPanel({super.key, required this.controller});
+
+  @override
+  State<GameFiltersPanel> createState() => _GameFiltersPanelState();
+}
+
+class _GameFiltersPanelState extends State<GameFiltersPanel> {
+  late final _titleController =
+      TextEditingController(text: widget.controller.localFilter.value);
+
+  HomeController get controller => widget.controller;
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +31,7 @@ class GameFiltersPanel extends StatelessWidget {
     final dateFormat = DateFormat('dd/MM/yyyy');
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: BackdropFilter(
@@ -46,14 +62,46 @@ class GameFiltersPanel extends StatelessWidget {
                           'Filtros avançados',
                           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                         ),
-                        if (!filters.isEmpty)
+                        if (!filters.isEmpty || controller.localFilter.value.isNotEmpty)
                           TextButton(
-                            onPressed: controller.clearFilters,
+                            onPressed: () {
+                              controller.clearFilters();
+                              _titleController.clear();
+                            },
                             child: const Text('Limpar'),
                           ),
                       ],
                     ),
                     const SizedBox(height: 12),
+                    const Text('Título', style: TextStyle(fontWeight: FontWeight.w600)),
+                    const SizedBox(height: 8),
+                    TextField(
+                      controller: _titleController,
+                      decoration: InputDecoration(
+                        hintText: 'Buscar por nome...',
+                        isDense: true,
+                        filled: true,
+                        fillColor: Colors.black.withValues(alpha: 0.1),
+                        prefixIcon: const Icon(Icons.search, size: 20),
+                        suffixIcon: _titleController.text.isEmpty
+                            ? null
+                            : IconButton(
+                                icon: const Icon(Icons.close, size: 18),
+                                onPressed: () {
+                                  _titleController.clear();
+                                  controller.localFilter.value = '';
+                                },
+                              ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                      ),
+                      onChanged: (v) => controller.localFilter.value = v,
+                    ),
+                    const SizedBox(height: 20),
                     if (genres.isNotEmpty) ...[
                       const Text('Gêneros', style: TextStyle(fontWeight: FontWeight.w600)),
                       const SizedBox(height: 8),

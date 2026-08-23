@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:game_notion/core/settings/user_settings_controller.dart';
 import 'package:game_notion/core/ui/app_state.dart';
-import 'package:game_notion/core/ui/widgets/app_app_bar.dart';
 import 'package:game_notion/core/ui/widgets/app_drawer.dart';
 import 'package:game_notion/core/ui/widgets/app_empty.dart';
 import 'package:game_notion/core/ui/widgets/app_loading.dart';
@@ -26,9 +25,16 @@ class _HomePageState extends AppState<HomePage, HomeController> {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
+      if (controller.settingsLoading.value ||
+          UserSettingsController.i.states.isEmpty) {
+        return const Scaffold(
+          backgroundColor: Colors.transparent,
+          body: AppLoading(),
+        );
+      }
+
       final state = UserSettingsController.i.states[controller.page.value];
       final label = state.name;
-      final title = '$label (${controller.games(state).length})';
       final isDark = Theme.of(context).brightness == Brightness.dark;
       final primaryColor = Theme.of(context).primaryColor;
       return Scaffold(
@@ -39,15 +45,27 @@ class _HomePageState extends AppState<HomePage, HomeController> {
           setState(() {});
         },
         drawer: const AppDrawer(),
-        appBar: AppAppBar(
-          title: title,
-          onSearch: (v) {
-            setState(() {
-              controller.localFilter(v);
-            });
-          },
-          hint: 'Pesquisar jogos salvos',
+        appBar: AppBar(
+          title: Text(label, overflow: TextOverflow.ellipsis),
+          centerTitle: true,
+          flexibleSpace: ClipRRect(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 12, sigmaY: 20),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Colors.white.withValues(alpha: 0.1),
+                      width: 1,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
           actions: [
+            Obx(() => Text('(${controller.games(state).length})')),
             Obx(() {
               final count = controller.filters.value.activeCount;
               return IconButton(
@@ -62,7 +80,6 @@ class _HomePageState extends AppState<HomePage, HomeController> {
           ],
         ),
         body: Container(
-          padding: const EdgeInsets.only(top: 12),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: isDark

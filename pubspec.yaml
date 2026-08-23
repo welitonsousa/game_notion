@@ -1,6 +1,6 @@
 name: game_notion
 description: "A new Flutter project."
-version: 1.0.6+9
+version: 1.0.7+10
 
 environment:
   sdk: '>=3.2.0 <4.0.0'
@@ -37,7 +37,6 @@ dependencies:
   zod_validation: ^1.0.5
   path_provider: ^2.1.6
   path_provider_windows: ^2.3.0
-  flutter_rating_bar: ^4.0.1
   intl: any
   translator: ^1.0.4+1
 dev_dependencies:

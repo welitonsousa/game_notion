@@ -36,6 +36,7 @@ class GameDetailController extends GetxController {
 
   final loading = true.obs;
   final error = false.obs;
+  final saving = false.obs;
 
   Future<void> findGame() async {
     try {
@@ -62,41 +63,50 @@ class GameDetailController extends GetxController {
     final existing = getSavedModel();
     existing.state = states.map((e) => e.id).toList();
     game.value!.state = existing.state;
-    await gameService.saveGame(game: existing);
+    await _saveGame(existing);
   }
 
   Future<void> saveUserRating(double rating) async {
     if (game.value == null) return;
     final existing = getSavedModel();
     existing.userRating = rating;
-    await gameService.saveGame(game: existing);
+    await _saveGame(existing);
   }
 
   Future<void> saveDateStarted(DateTime? date) async {
     if (game.value == null) return;
     final existing = getSavedModel();
     existing.dateStarted = date;
-    await gameService.saveGame(game: existing);
+    await _saveGame(existing);
   }
 
   Future<void> saveDateFinished(DateTime? date) async {
     if (game.value == null) return;
     final existing = getSavedModel();
     existing.dateFinished = date;
-    await gameService.saveGame(game: existing);
+    await _saveGame(existing);
   }
 
   Future<void> saveUserReview(String text) async {
     if (game.value == null) return;
     final existing = getSavedModel();
     existing.userReview = text.isEmpty ? null : text;
-    await gameService.saveGame(game: existing);
+    await _saveGame(existing);
   }
 
   Future<void> savePlatformPlayed(String? platform) async {
     if (game.value == null) return;
     final existing = getSavedModel();
     existing.platformPlayed = platform;
-    await gameService.saveGame(game: existing);
+    await _saveGame(existing);
+  }
+
+  Future<void> _saveGame(GameSmallModel game) async {
+    saving.value = true;
+    try {
+      await gameService.saveGame(game: game);
+    } finally {
+      saving.value = false;
+    }
   }
 }

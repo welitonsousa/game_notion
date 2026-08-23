@@ -1,3 +1,4 @@
+import 'package:game_notion/core/settings/user_settings_controller.dart';
 import 'package:game_notion/core/ui/app_message.dart';
 import 'package:game_notion/remote/services/auth/auth_service.dart';
 import 'package:game_notion/routers/pages.dart';
@@ -13,6 +14,7 @@ class SignUpController extends GetxController {
     try {
       loading.value = true;
       await authService.signUp(email: email, password: password);
+      await UserSettingsController.initialize();
       Get.back();
       Get.offAndToNamed(AppPages.home);
     } catch (e) {

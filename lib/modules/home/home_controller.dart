@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:game_notion/core/settings/user_settings_controller.dart';
 import 'package:game_notion/models/game_item_list_model.dart';
 import 'package:game_notion/models/game_small_model.dart';
 import 'package:game_notion/modules/home/game_filters.dart';
@@ -17,6 +18,7 @@ class HomeController extends GetxController {
   final isSearch = false.obs;
   final localFilter = ''.obs;
   final loading = true.obs;
+  final settingsLoading = UserSettingsController.i.states.isEmpty.obs;
   final page = INITIAl_PAGE.obs;
   final pageViewController = PageController(initialPage: INITIAl_PAGE);
   final showFilters = false.obs;
@@ -41,7 +43,10 @@ class HomeController extends GetxController {
     return set.toList()..sort();
   }
 
-  void clearFilters() => filters.value = const GameFilters();
+  void clearFilters() {
+    filters.value = const GameFilters();
+    localFilter.value = '';
+  }
 
   List<GameSmallModel> games(GameItemListModel state) {
     var list = allGames.where((g) {
@@ -104,9 +109,17 @@ class HomeController extends GetxController {
     });
   }
 
+  Future<void> _ensureSettingsLoaded() async {
+    if (UserSettingsController.i.states.isEmpty) {
+      await UserSettingsController.getListStates();
+    }
+    settingsLoading.value = false;
+  }
+
   @override
   void onReady() {
     openSteamGamesList();
+    _ensureSettingsLoaded();
     super.onReady();
   }
 }

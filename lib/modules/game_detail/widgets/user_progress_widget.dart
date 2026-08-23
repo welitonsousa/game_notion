@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:game_notion/modules/game_detail/game_detail_controller.dart';
+import 'package:game_notion/modules/game_detail/widgets/star_rating_widget.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -16,10 +16,12 @@ class UserProgressWidget extends StatefulWidget {
 
 class _UserProgressWidgetState extends State<UserProgressWidget> {
   final reviewController = new TextEditingController();
+  late double _rating;
 
   @override
   initState() {
     reviewController.text = widget.controller.getSavedModel().userReview ?? '';
+    _rating = widget.controller.getSavedModel().userRating ?? 0;
     super.initState();
   }
 
@@ -71,25 +73,27 @@ class _UserProgressWidgetState extends State<UserProgressWidget> {
                 const SizedBox(height: 20),
 
                 // Rating
-                const Text(
-                  'Minha Nota',
-                  style: TextStyle(fontWeight: FontWeight.w600),
+                Row(
+                  children: [
+                    const Text(
+                      'Minha Nota',
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                    if (widget.controller.saving.value) ...[
+                      const SizedBox(width: 8),
+                      const SizedBox(
+                        width: 12,
+                        height: 12,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                    ],
+                  ],
                 ),
                 const SizedBox(height: 8),
-                RatingBar.builder(
-                  initialRating: savedModel.userRating ?? 0,
-                  minRating: 0.5,
-                  direction: Axis.horizontal,
-                  allowHalfRating: true,
-                  itemCount: 5,
-                  itemSize: 32,
-                  unratedColor: Colors.grey.withValues(alpha: 0.3),
-                  itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  itemBuilder: (context, _) => const Icon(
-                    Icons.star_rounded,
-                    color: Colors.amber,
-                  ),
-                  onRatingUpdate: (rating) {
+                StarRatingWidget(
+                  rating: _rating,
+                  onRatingChanged: (rating) {
+                    setState(() => _rating = rating);
                     widget.controller.saveUserRating(rating);
                   },
                 ),

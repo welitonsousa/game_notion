@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:game_notion/core/settings/user_settings_controller.dart';
 import 'package:game_notion/core/ui/app_message.dart';
 import 'package:game_notion/firebase_options.dart';
 import 'package:game_notion/remote/services/auth/auth_service.dart';
@@ -19,6 +20,7 @@ class SignInController extends GetxController {
     try {
       loading.value = true;
       await authService.signIn(email: email, password: password);
+      await UserSettingsController.initialize();
       Get.offAndToNamed(AppPages.home);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'wrong-password') {
@@ -61,6 +63,7 @@ class SignInController extends GetxController {
     );
 
     await FirebaseAuth.instance.signInWithCredential(credential);
+    await UserSettingsController.initialize();
     Get.offAndToNamed(AppPages.home);
   }
 }

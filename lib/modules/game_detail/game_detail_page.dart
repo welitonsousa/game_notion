@@ -64,6 +64,45 @@ class _GameDetailPageState extends State<GameDetailPage> {
             Shadow(color: Colors.black54, blurRadius: 4, offset: Offset(0, 1))
           ],
         ),
+        actions: [
+          Obx(() => AnimatedSwitcher(
+                duration: const Duration(milliseconds: 200),
+                child: controller.saving.value
+                    ? const Padding(
+                        key: ValueKey('saving'),
+                        padding: EdgeInsets.only(right: 16),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                              width: 14,
+                              height: 14,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(width: 8),
+                            Text(
+                              'Salvando...',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                shadows: [
+                                  Shadow(
+                                    color: Colors.black54,
+                                    blurRadius: 4,
+                                    offset: Offset(0, 1),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : const SizedBox.shrink(key: ValueKey('idle')),
+              )),
+        ],
       ),
       body: Container(
         decoration: BoxDecoration(

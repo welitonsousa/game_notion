@@ -8,7 +8,7 @@ class Env {
   );
 
   static String get TWITCH_CLIENT_ID {
-    final clientId = TwitchCredentialsStore.clientId()?.trim();
+    final clientId = TwitchCredentialsStore.clientId()?.trim() ?? const String.fromEnvironment('TWITCH_CLIENT_ID');
     if (clientId != null && clientId.isNotEmpty) {
       return clientId;
     }
@@ -16,7 +16,7 @@ class Env {
   }
 
   static String get TWITCH_CLIENT_SECRET {
-    final clientSecret = TwitchCredentialsStore.clientSecret()?.trim();
+    final clientSecret = TwitchCredentialsStore.clientSecret()?.trim() ?? const String.fromEnvironment('TWITCH_CLIENT_SECRET');
     if (clientSecret != null && clientSecret.isNotEmpty) {
       return clientSecret;
     }
