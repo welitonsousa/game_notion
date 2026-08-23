@@ -132,7 +132,7 @@ class _HomePageState extends AppState<HomePage, HomeController> {
                           replacement: const AppEmpty(),
                           child: GridView.builder(
                             padding: const EdgeInsets.only(
-                                left: 16, right: 16, top: 8, bottom: 120),
+                                left: 16, right: 16, top: 16, bottom: 120),
                             gridDelegate:
                                 const SliverGridDelegateWithMaxCrossAxisExtent(
                               maxCrossAxisExtent: 200,

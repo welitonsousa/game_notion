@@ -53,56 +53,61 @@ class GameModel {
     final involvedCompanies = (json['involved_companies'] ?? []) as List;
 
     final res = GameModel(
-      id: json['id'],
-      state: json['state'] != null ? List<int>.from(json['state']) : [],
-      cover: json['cover'] != null ? CoverModel.fromJson(json['cover']) : null,
-      similarGames: (json['similar_games'] ?? [])
-          .map<ExternalGameModel>(ExternalGameModel.fromJson)
-          .toList(),
-      name: json['name'] ?? '',
-      platforms: (json['platforms'] ?? [])
-          .map<PlatformModel>(PlatformModel.fromJson)
-          .toList(),
-      screenshots: (json['screenshots'] ?? [])
-          .map<CoverModel>(CoverModel.fromJson)
-          .toList(),
-      summary: json['summary'] ?? '',
-      videos:
-          (json['videos'] ?? []).map<VideoModel>(VideoModel.fromJson).toList(),
-      artworks: (json['artworks'] ?? [])
-          .map<CoverModel>(CoverModel.fromJson)
-          .toList(),
-      firstReleaseDate: json['first_release_date'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(
-              (json['first_release_date'] as int) * 1000)
-          : null,
-      genres: ((json['genres'] ?? []) as List)
-          .map<String>((e) => (e['name'] ?? '') as String)
-          .where((e) => e.isNotEmpty)
-          .toList(),
-      developers: involvedCompanies
-          .where((e) => e['developer'] == true && e['company'] != null)
-          .map<String>((e) => (e['company']['name'] ?? '') as String)
-          .where((e) => e.isNotEmpty)
-          .toList(),
-      publishers: involvedCompanies
-          .where((e) => e['publisher'] == true && e['company'] != null)
-          .map<String>((e) => (e['company']['name'] ?? '') as String)
-          .where((e) => e.isNotEmpty)
-          .toList(),
-      gameModes: ((json['game_modes'] ?? []) as List)
-          .map<String>((e) => (e['name'] ?? '') as String)
-          .where((e) => e.isNotEmpty)
-          .toList(),
-      rating: json['rating'] != null ? (json['rating'] as num).toDouble() : null,
-      aggregatedRating: json['aggregated_rating'] != null
-          ? (json['aggregated_rating'] as num).toDouble()
-          : null,
-      languageSupports: ((json['language_supports'] ?? []) as List)
-          .map<LanguageSupportModel>((e) => LanguageSupportModel.fromJson(e))
-          .where((e) => e.language.isNotEmpty && e.supportType.isNotEmpty)
-          .toList(),
-    );
+        id: json['id'],
+        state: json['state'] != null ? List<int>.from(json['state']) : [],
+        cover:
+            json['cover'] != null ? CoverModel.fromJson(json['cover']) : null,
+        similarGames: (json['similar_games'] ?? [])
+            .map<ExternalGameModel>(ExternalGameModel.fromJson)
+            .toList(),
+        name: json['name'] ?? '',
+        platforms: (json['platforms'] ?? [])
+            .map<PlatformModel>(PlatformModel.fromJson)
+            .toList(),
+        screenshots: (json['screenshots'] ?? [])
+            .map<CoverModel>(CoverModel.fromJson)
+            .toList(),
+        summary: json['summary'] ?? '',
+        videos: (json['videos'] ?? [])
+            .map<VideoModel>(VideoModel.fromJson)
+            .toList(),
+        artworks: (json['artworks'] ?? [])
+            .map<CoverModel>(CoverModel.fromJson)
+            .toList(),
+        firstReleaseDate: json['first_release_date'] != null
+            ? DateTime.fromMillisecondsSinceEpoch(
+                (json['first_release_date'] as int) * 1000)
+            : null,
+        genres: ((json['genres'] ?? []) as List)
+            .map<String>((e) => (e['name'] ?? '') as String)
+            .where((e) => e.isNotEmpty)
+            .toList(),
+        developers: involvedCompanies
+            .where((e) => e['developer'] == true && e['company'] != null)
+            .map<String>((e) => (e['company']['name'] ?? '') as String)
+            .where((e) => e.isNotEmpty)
+            .toList(),
+        publishers: involvedCompanies
+            .where((e) => e['publisher'] == true && e['company'] != null)
+            .map<String>((e) => (e['company']['name'] ?? '') as String)
+            .where((e) => e.isNotEmpty)
+            .toList(),
+        gameModes: ((json['game_modes'] ?? []) as List)
+            .map<String>((e) => (e['name'] ?? '') as String)
+            .where((e) => e.isNotEmpty)
+            .toList(),
+        rating:
+            json['rating'] != null ? (json['rating'] as num).toDouble() : null,
+        aggregatedRating: json['aggregated_rating'] != null
+            ? (json['aggregated_rating'] as num).toDouble()
+            : null,
+        languageSupports: ((json['language_supports'] ?? []) as List)
+            .map<LanguageSupportModel>((e) => LanguageSupportModel.fromJson(e))
+            .where((e) => e.language.isNotEmpty && e.supportType.isNotEmpty)
+            .toList(),
+        timeToBeat: json['time_to_beat'] != null
+            ? TimeToBeatModel.fromJson(json['time_to_beat'])
+            : null);
 
     return res;
   }

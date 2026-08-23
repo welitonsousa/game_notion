@@ -8,7 +8,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:game_notion/core/settings/app_initialize.dart';
 import 'package:game_notion/core/settings/twitch_credentials_store.dart';
 import 'package:game_notion/core/settings/user_settings_controller.dart';
-import 'package:game_notion/firebase_options.dart';
 import 'package:game_notion/routers/pages.dart';
 import 'package:get/get.dart';
 

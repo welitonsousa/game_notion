@@ -72,18 +72,23 @@ class GameRepositoryImpl implements GameRepository {
     final data =
         '''where id=$id; fields *,language_supports.*,language_supports.language_support_type.*,language_supports.language.*,artworks.image_id,cover.image_id,name,summary,screenshots.image_id,similar_games.cover.image_id,similar_games.name,first_release_date,platforms.abbreviation,platforms.name,platforms.slug,videos.name,videos.video_id,genres.name,involved_companies.company.name,involved_companies.developer,involved_companies.publisher,game_modes.name,rating,aggregated_rating;''';
     await _twitchSignIn();
-    final res = await restClient.post(
-      '/games/',
-      data: data,
-      options: restClient.auth(),
-    );
+    final [gameJson, timeToBeatJson] = await Future.wait([
+      restClient.post(
+        '/games/',
+        data: data,
+        options: restClient.auth(),
+      ),
+      _fetchTimeToBeat(id),
+    ]);
 
-    final game = GameModel.fromJson(res.data[0]);
-    game.timeToBeat = await _fetchTimeToBeat(id);
+    final game = GameModel.fromJson({
+      ...gameJson.data.first,
+      'time_to_beat': timeToBeatJson,
+    });
     return game;
   }
 
-  Future<TimeToBeatModel?> _fetchTimeToBeat(int id) async {
+  Future<dynamic> _fetchTimeToBeat(int id) async {
     try {
       final res = await restClient.post(
         '/game_time_to_beats/',
@@ -91,7 +96,7 @@ class GameRepositoryImpl implements GameRepository {
         options: restClient.auth(),
       );
       if (res.data is List && (res.data as List).isNotEmpty) {
-        return TimeToBeatModel.fromJson(res.data[0]);
+        return res.data[0];
       }
     } catch (_) {}
     return null;

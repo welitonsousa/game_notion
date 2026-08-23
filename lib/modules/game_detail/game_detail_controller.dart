@@ -4,6 +4,7 @@ import 'package:game_notion/models/game_small_model.dart';
 import 'package:game_notion/modules/home/home_controller.dart';
 import 'package:game_notion/remote/services/games/games_sevice.dart';
 import 'package:get/get.dart';
+import 'package:translator/translator.dart';
 
 class GameDetailController extends GetxController {
   final GameService gameService;
@@ -42,10 +43,23 @@ class GameDetailController extends GetxController {
     try {
       loading.value = true;
       game.value = await gameService.getGameById(id: gameId);
+      await _translateSummary();
     } catch (e) {
       error.value = true;
     } finally {
       loading.value = false;
+    }
+  }
+
+  Future<void> _translateSummary() async {
+    final currentGame = game.value;
+    if (currentGame == null || currentGame.summary.isEmpty) return;
+
+    final translated = await currentGame.summary.translate(to: 'pt');
+
+    if (game.value?.id == currentGame.id) {
+      game.value!.summary = translated.text;
+      game.refresh();
     }
   }
 

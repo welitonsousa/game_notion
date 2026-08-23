@@ -73,22 +73,11 @@ class _UserProgressWidgetState extends State<UserProgressWidget> {
                 const SizedBox(height: 20),
 
                 // Rating
-                Row(
-                  children: [
-                    const Text(
-                      'Minha Nota',
-                      style: TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                    if (widget.controller.saving.value) ...[
-                      const SizedBox(width: 8),
-                      const SizedBox(
-                        width: 12,
-                        height: 12,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      ),
-                    ],
-                  ],
+                const Text(
+                  'Minha Nota',
+                  style: TextStyle(fontWeight: FontWeight.w600),
                 ),
+
                 const SizedBox(height: 8),
                 StarRatingWidget(
                   rating: _rating,
@@ -152,7 +141,7 @@ class _UserProgressWidgetState extends State<UserProgressWidget> {
                         onTap: () async {
                           final date = await showDatePicker(
                             context: context,
-                             locale: Get.locale,
+                            locale: Get.locale,
                             initialDate: dateStarted ?? DateTime.now(),
                             firstDate: DateTime(1980),
                             lastDate: DateTime.now(),
@@ -203,7 +192,6 @@ class _UserProgressWidgetState extends State<UserProgressWidget> {
                 ),
                 const SizedBox(height: 8),
                 TextFormField(
-               
                   maxLines: 8,
                   controller: reviewController,
                   textInputAction: TextInputAction.newline,

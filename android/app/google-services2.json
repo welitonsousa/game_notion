@@ -14,14 +14,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "682329935211-e8b2r37dum8olt9fsousp6q03pbt62ke.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.gamenotion.br.game_notion",
-            "certificate_hash": "3eff503fa15cae28cf87b42f4e082b926d2ef182"
-          }
-        },
-        {
           "client_id": "682329935211-bjipvp31156ml2v93bvd5s5hsq27sesu.apps.googleusercontent.com",
           "client_type": 3
         }

@@ -15,8 +15,10 @@ class TwitchCredentialsStore {
   }
 
   static bool hasSavedCredentials() {
-    final clientIdValue = clientId()?.trim() ?? '';
-    final clientSecretValue = clientSecret()?.trim() ?? '';
+    final clientIdValue =
+        clientId()?.trim() ?? const String.fromEnvironment('TWITCH_CLIENT_ID');
+    final clientSecretValue = clientSecret()?.trim() ??
+        const String.fromEnvironment('TWITCH_CLIENT_SECRET');
     return clientIdValue.isNotEmpty && clientSecretValue.isNotEmpty;
   }
 
